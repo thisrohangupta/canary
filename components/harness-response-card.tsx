@@ -37,20 +37,27 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
             </div>
           </div>
         </CardHeader>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Copy className="h-4 w-4 mr-1" />
-            Copy YAML
-          </Button>
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Download className="h-4 w-4 mr-1" />
-            Export
-          </Button>
-          {data.previewUrl && (
-            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-              Preview UI
+        <div className="px-6 pb-2">
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              className="text-gray-400 hover:text-white"
+              onClick={() => navigator.clipboard.writeText(data.yaml || '')}
+            >
+              <Copy className="h-4 w-4 mr-1" />
+              Copy YAML
             </Button>
-          )}
+            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+              <Download className="h-4 w-4 mr-1" />
+              Export
+            </Button>
+            {data.previewUrl && (
+              <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+                Preview UI
+              </Button>
+            )}
+          </div>
         </div>
         <CardContent>
           <div className="space-y-4">
@@ -64,11 +71,17 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
                 ))}
               </div>
             </div>
-            <div className="bg-gray-950 rounded p-4 font-mono text-sm text-gray-300 max-h-48 overflow-y-auto">
-              <pre>{data.yaml}</pre>
-            </div>
+            {data.yaml && (
+              <div className="bg-gray-950 rounded p-4 font-mono text-sm text-gray-300 max-h-48 overflow-y-auto">
+                <pre className="whitespace-pre-wrap">{data.yaml}</pre>
+              </div>
+            )}
             <div className="flex gap-2">
-              <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 flex-1">
+              <Button 
+                size="sm" 
+                className="bg-cyan-600 hover:bg-cyan-700 flex-1"
+                onClick={() => window.open('https://app.harness.io', '_blank')}
+              >
                 <Play className="h-4 w-4 mr-1" />
                 Deploy to Harness
               </Button>
@@ -95,20 +108,27 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
             </div>
           </div>
         </CardHeader>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Copy className="h-4 w-4 mr-1" />
-            Copy YAML
-          </Button>
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Download className="h-4 w-4 mr-1" />
-            Export
-          </Button>
-          {data.previewUrl && (
-            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-              Preview UI
+        <div className="px-6 pb-2">
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              className="text-gray-400 hover:text-white"
+              onClick={() => navigator.clipboard.writeText(data.yaml || '')}
+            >
+              <Copy className="h-4 w-4 mr-1" />
+              Copy YAML
             </Button>
-          )}
+            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+              <Download className="h-4 w-4 mr-1" />
+              Export
+            </Button>
+            {data.previewUrl && (
+              <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+                Preview UI
+              </Button>
+            )}
+          </div>
         </div>
         <CardContent>
           <div className="space-y-4">
@@ -138,7 +158,11 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
               <span className="text-sm text-green-400">26% cost reduction possible with recommended changes</span>
             </div>
             <div className="flex gap-2">
-              <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 flex-1">
+              <Button 
+                size="sm" 
+                className="bg-cyan-600 hover:bg-cyan-700 flex-1"
+                onClick={() => window.open('https://app.harness.io', '_blank')}
+              >
                 <Play className="h-4 w-4 mr-1" />
                 Deploy to Harness
               </Button>
@@ -166,20 +190,27 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
             </div>
           </div>
         </CardHeader>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Copy className="h-4 w-4 mr-1" />
-            Copy YAML
-          </Button>
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Download className="h-4 w-4 mr-1" />
-            Export
-          </Button>
-          {data.previewUrl && (
-            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-              Preview UI
+        <div className="px-6 pb-2">
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              className="text-gray-400 hover:text-white"
+              onClick={() => navigator.clipboard.writeText(data.yaml || '')}
+            >
+              <Copy className="h-4 w-4 mr-1" />
+              Copy YAML
             </Button>
-          )}
+            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+              <Download className="h-4 w-4 mr-1" />
+              Export
+            </Button>
+            {data.previewUrl && (
+              <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+                Preview UI
+              </Button>
+            )}
+          </div>
         </div>
         <CardContent>
           <div className="space-y-4">
@@ -202,7 +233,11 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
               <span className="text-sm text-blue-400">Service ready for deployment</span>
             </div>
             <div className="flex gap-2">
-              <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 flex-1">
+              <Button 
+                size="sm" 
+                className="bg-cyan-600 hover:bg-cyan-700 flex-1"
+                onClick={() => window.open('https://app.harness.io', '_blank')}
+              >
                 <Play className="h-4 w-4 mr-1" />
                 Deploy to Harness
               </Button>
@@ -230,20 +265,27 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
             </div>
           </div>
         </CardHeader>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Copy className="h-4 w-4 mr-1" />
-            Copy YAML
-          </Button>
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Download className="h-4 w-4 mr-1" />
-            Export
-          </Button>
-          {data.previewUrl && (
-            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-              Preview UI
+        <div className="px-6 pb-2">
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              className="text-gray-400 hover:text-white"
+              onClick={() => navigator.clipboard.writeText(data.yaml || '')}
+            >
+              <Copy className="h-4 w-4 mr-1" />
+              Copy YAML
             </Button>
-          )}
+            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+              <Download className="h-4 w-4 mr-1" />
+              Export
+            </Button>
+            {data.previewUrl && (
+              <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+                Preview UI
+              </Button>
+            )}
+          </div>
         </div>
         <CardContent>
           <div className="space-y-4">
@@ -257,7 +299,11 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
               ))}
             </div>
             <div className="flex gap-2">
-              <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 flex-1">
+              <Button 
+                size="sm" 
+                className="bg-cyan-600 hover:bg-cyan-700 flex-1"
+                onClick={() => window.open('https://app.harness.io', '_blank')}
+              >
                 <Play className="h-4 w-4 mr-1" />
                 Deploy to Harness
               </Button>
@@ -283,20 +329,27 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
             <CardTitle className="text-orange-400">Documentation</CardTitle>
           </div>
         </CardHeader>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Copy className="h-4 w-4 mr-1" />
-            Copy YAML
-          </Button>
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Download className="h-4 w-4 mr-1" />
-            Export
-          </Button>
-          {data.previewUrl && (
-            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-              Preview UI
+        <div className="px-6 pb-2">
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              className="text-gray-400 hover:text-white"
+              onClick={() => navigator.clipboard.writeText(data.yaml || '')}
+            >
+              <Copy className="h-4 w-4 mr-1" />
+              Copy YAML
             </Button>
-          )}
+            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+              <Download className="h-4 w-4 mr-1" />
+              Export
+            </Button>
+            {data.previewUrl && (
+              <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+                Preview UI
+              </Button>
+            )}
+          </div>
         </div>
         <CardContent>
           <div className="space-y-3">
@@ -310,7 +363,11 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
               ))}
             </div>
             <div className="flex gap-2">
-              <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 flex-1">
+              <Button 
+                size="sm" 
+                className="bg-cyan-600 hover:bg-cyan-700 flex-1"
+                onClick={() => window.open('https://app.harness.io', '_blank')}
+              >
                 <Play className="h-4 w-4 mr-1" />
                 Deploy to Harness
               </Button>
@@ -336,20 +393,27 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
             <CardTitle className="text-yellow-400">Infrastructure Setup</CardTitle>
           </div>
         </CardHeader>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Copy className="h-4 w-4 mr-1" />
-            Copy YAML
-          </Button>
-          <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-            <Download className="h-4 w-4 mr-1" />
-            Export
-          </Button>
-          {data.previewUrl && (
-            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-              Preview UI
+        <div className="px-6 pb-2">
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              className="text-gray-400 hover:text-white"
+              onClick={() => navigator.clipboard.writeText(data.yaml || '')}
+            >
+              <Copy className="h-4 w-4 mr-1" />
+              Copy YAML
             </Button>
-          )}
+            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+              <Download className="h-4 w-4 mr-1" />
+              Export
+            </Button>
+            {data.previewUrl && (
+              <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+                Preview UI
+              </Button>
+            )}
+          </div>
         </div>
         <CardContent>
           <div className="space-y-4">
@@ -372,7 +436,11 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
               <span className="text-sm text-yellow-400">Verify connector configuration before use</span>
             </div>
             <div className="flex gap-2">
-              <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 flex-1">
+              <Button 
+                size="sm" 
+                className="bg-cyan-600 hover:bg-cyan-700 flex-1"
+                onClick={() => window.open('https://app.harness.io', '_blank')}
+              >
                 <Play className="h-4 w-4 mr-1" />
                 Deploy to Harness
               </Button>
@@ -381,6 +449,254 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
                   Preview Changes
                 </Button>
               )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Handle error responses
+  if (responseType === "rate_limit_error") {
+    return (
+      <Card className="mt-4 bg-red-950/20 border-red-900">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-red-400" />
+            <CardTitle className="text-red-400">Rate Limit Exceeded</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="p-4 bg-red-900/20 border border-red-800 rounded">
+              <div className="text-sm text-red-300 mb-3">
+                You've reached your daily limit of 50 requests for the Gemini API free tier.
+              </div>
+              <div className="space-y-2 text-sm text-gray-300">
+                <div>• Quota resets in: <span className="text-red-400 font-medium">24 hours</span></div>
+                <div>• Current limit: <span className="text-red-400 font-medium">50 requests/day</span></div>
+                <div>• Plan: <span className="text-red-400 font-medium">Free Tier</span></div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                size="sm" 
+                className="bg-red-600 hover:bg-red-700 flex-1"
+                onClick={() => window.open(data?.upgradeUrl || 'https://ai.google.dev/', '_blank')}
+              >
+                Upgrade Plan
+              </Button>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="border-gray-600 text-gray-300"
+                onClick={() => window.open(data?.docsUrl || 'https://ai.google.dev/gemini-api/docs/rate-limits', '_blank')}
+              >
+                View Docs
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  if (responseType === "api_key_error") {
+    return (
+      <Card className="mt-4 bg-yellow-950/20 border-yellow-900">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-yellow-400" />
+            <CardTitle className="text-yellow-400">API Key Configuration Error</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="p-4 bg-yellow-900/20 border border-yellow-800 rounded">
+              <div className="text-sm text-yellow-300 mb-3">
+                Your Gemini API key is not properly configured.
+              </div>
+              <div className="space-y-2 text-sm text-gray-300">
+                <div>1. Create a <code className="bg-gray-800 px-1 rounded">.env.local</code> file</div>
+                <div>2. Add: <code className="bg-gray-800 px-1 rounded">NEXT_PUBLIC_GEMINI_API_KEY=your_key</code></div>
+                <div>3. Restart your development server</div>
+              </div>
+            </div>
+            <Button 
+              size="sm" 
+              className="bg-yellow-600 hover:bg-yellow-700 w-full"
+              onClick={() => window.open(data?.setupUrl || 'https://ai.google.dev/', '_blank')}
+            >
+              Get API Key
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  if (responseType === "quota_error") {
+    return (
+      <Card className="mt-4 bg-orange-950/20 border-orange-900">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-orange-400" />
+            <CardTitle className="text-orange-400">Quota or Billing Issue</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="p-4 bg-orange-900/20 border border-orange-800 rounded">
+              <div className="text-sm text-orange-300 mb-3">
+                There's an issue with your API quota or billing configuration.
+              </div>
+              <div className="space-y-2 text-sm text-gray-300">
+                <div>• Check your Google Cloud Console billing</div>
+                <div>• Review API usage and quotas</div>
+                <div>• Verify payment method is valid</div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                size="sm" 
+                className="bg-orange-600 hover:bg-orange-700 flex-1"
+                onClick={() => window.open(data?.billingUrl || 'https://console.cloud.google.com/billing', '_blank')}
+              >
+                Check Billing
+              </Button>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="border-gray-600 text-gray-300"
+                onClick={() => window.open(data?.pricingUrl || 'https://ai.google.dev/gemini-api/docs/rate-limits', '_blank')}
+              >
+                View Pricing
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  if (responseType === "network_error") {
+    return (
+      <Card className="mt-4 bg-blue-950/20 border-blue-900">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-blue-400" />
+            <CardTitle className="text-blue-400">Connection Error</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="p-4 bg-blue-900/20 border border-blue-800 rounded">
+              <div className="text-sm text-blue-300 mb-3">
+                Unable to connect to the Gemini API. This could be a temporary issue.
+              </div>
+              <div className="space-y-2 text-sm text-gray-300">
+                <div>• Check your internet connection</div>
+                <div>• Wait a moment and try again</div>
+                <div>• Check for service outages</div>
+              </div>
+            </div>
+            <Button 
+              size="sm" 
+              className="bg-blue-600 hover:bg-blue-700 w-full"
+              onClick={() => window.location.reload()}
+            >
+              Retry Connection
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  if (responseType === "error") {
+    return (
+      <Card className="mt-4 bg-gray-950/50 border-gray-800">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-gray-400" />
+            <CardTitle className="text-gray-400">Unexpected Error</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="p-4 bg-gray-900/50 border border-gray-800 rounded">
+              <div className="text-sm text-gray-300 mb-3">
+                An unexpected error occurred while processing your request.
+              </div>
+              {data?.description && (
+                <div className="text-xs text-gray-500 bg-gray-800 p-2 rounded font-mono">
+                  {data.description}
+                </div>
+              )}
+            </div>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="border-gray-600 text-gray-300 w-full"
+              onClick={() => window.location.reload()}
+            >
+              Try Again
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Generic fallback for any YAML response that doesn't match specific types
+  if (data?.yaml) {
+    return (
+      <Card className="mt-4 bg-gray-900 border-gray-700">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Settings className="h-5 w-5 text-cyan-400" />
+              <CardTitle className="text-cyan-400">Harness Configuration</CardTitle>
+            </div>
+          </div>
+        </CardHeader>
+        <div className="px-6 pb-2">
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              className="text-gray-400 hover:text-white"
+              onClick={() => navigator.clipboard.writeText(data.yaml || '')}
+            >
+              <Copy className="h-4 w-4 mr-1" />
+              Copy YAML
+            </Button>
+            <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
+              <Download className="h-4 w-4 mr-1" />
+              Export
+            </Button>
+          </div>
+        </div>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-medium text-white mb-2">{data.title || "Harness Configuration"}</h4>
+              <p className="text-sm text-gray-400">{data.description || "Generated configuration ready for deployment"}</p>
+            </div>
+            {data.yaml && (
+              <div className="bg-gray-950 rounded p-4 font-mono text-sm text-gray-300 max-h-48 overflow-y-auto">
+                <pre className="whitespace-pre-wrap">{data.yaml}</pre>
+              </div>
+            )}
+            <div className="flex gap-2">
+              <Button 
+                size="sm" 
+                className="bg-cyan-600 hover:bg-cyan-700 flex-1"
+                onClick={() => window.open('https://app.harness.io', '_blank')}
+              >
+                <Play className="h-4 w-4 mr-1" />
+                Deploy to Harness
+              </Button>
             </div>
           </div>
         </CardContent>

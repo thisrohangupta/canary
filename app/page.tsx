@@ -1,60 +1,80 @@
 "use client"
 
-import { useState } from "react"
-import { Sidebar } from "@/components/sidebar"
-import { MainContent } from "@/components/main-content"
-import { ChatInterface } from "@/components/chat-interface"
+import { useRouter } from "next/navigation"
+import { LandingPage } from "@/components/landing-page"
+import { ChatSidebar } from "@/components/chat-sidebar"
+import { NewProjectModal } from "@/components/new-project-modal"
+import { chatStorage } from "@/lib/chat-storage"
+import { useState, useCallback } from "react"
 
-export default function CanaryApp() {
-  const [activeChat, setActiveChat] = useState<string | null>(null)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [initialPrompt, setInitialPrompt] = useState<string | null>(null)
+export default function HomePage() {
+  const router = useRouter()
+  const [showNewProjectModal, setShowNewProjectModal] = useState(false)
 
-  const handleNewChat = (promptOrAction?: string) => {
-    if (!promptOrAction) {
-      setActiveChat("new-chat")
-      setInitialPrompt(null)
-      return
+  const handleStartChat = useCallback((prompt: string) => {
+    // Create new chat and navigate to it
+    const newChat = {
+      id: chatStorage.generateId(),
+      title: 'New Chat',
+      messages: [],
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
 
-    const isAction = ["pipeline", "service", "environment", "connector", "cost", "docs"].includes(promptOrAction)
+    chatStorage.saveChat(newChat)
+    
+    // Navigate to the chat with the initial prompt
+    router.push(`/chat/${newChat.id}?prompt=${encodeURIComponent(prompt)}`)
+  }, [router])
 
-    if (isAction) {
-      const prompt = `Create a new ${promptOrAction}`
-      setInitialPrompt(prompt)
-      setActiveChat(`new-${promptOrAction}-chat`)
+  const handleChatSelect = useCallback((chatId: string) => {
+    router.push(`/chat/${chatId}`)
+  }, [router])
+
+  const handleNewChat = useCallback((actionType?: string, projectId?: string) => {
+    const newChat = {
+      id: chatStorage.generateId(),
+      title: 'New Chat',
+      projectId,
+      messages: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      actionType
+    }
+
+    chatStorage.saveChat(newChat)
+    
+    if (projectId) {
+      chatStorage.addChatToProject(projectId, newChat.id)
+      router.push(`/project/${projectId}/chat/${newChat.id}`)
     } else {
-      setInitialPrompt(promptOrAction)
-      setActiveChat("new-chat")
+      router.push(`/chat/${newChat.id}`)
     }
-  }
+  }, [router])
 
-  const handleChatSelect = (chatId: string) => {
-    setActiveChat(chatId)
-    setInitialPrompt(null) // Clear initial prompt when selecting an existing chat
-  }
+  const handleNewProject = useCallback(() => {
+    setShowNewProjectModal(true)
+  }, [])
+
+  const handleProjectCreated = useCallback((projectId: string) => {
+    router.push(`/project/${projectId}`)
+  }, [router])
 
   return (
-    <div className="flex h-screen bg-gray-950 text-white">
-      <Sidebar
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-        activeChat={activeChat}
+    <div className="flex h-screen bg-gray-950">
+      <ChatSidebar
         onChatSelect={handleChatSelect}
         onNewChat={handleNewChat}
+        onNewProject={handleNewProject}
       />
-      <div className="flex-1 flex flex-col">
-        {activeChat ? (
-          <ChatInterface
-            key={activeChat} // Use key to re-mount component for new chats
-            chatId={activeChat}
-            onClose={() => setActiveChat(null)}
-            initialPrompt={initialPrompt}
-          />
-        ) : (
-          <MainContent onNewChat={handleNewChat} />
-        )}
-      </div>
+      
+      <LandingPage onStartChat={handleStartChat} />
+
+      <NewProjectModal
+        isOpen={showNewProjectModal}
+        onClose={() => setShowNewProjectModal(false)}
+        onProjectCreated={handleProjectCreated}
+      />
     </div>
   )
 }

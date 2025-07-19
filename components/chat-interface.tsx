@@ -1,71 +1,182 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Paperclip, Share, RotateCcw, X, Send } from "lucide-react"
+import { Paperclip, Share, RotateCcw, X, Send, Search, MessageCircle, Code2 } from "lucide-react"
 import { HarnessResponseCard } from "./harness-response-card"
+import { MarkdownRenderer } from "./markdown-renderer"
+import { YamlCanvas } from "./yaml-canvas"
+import { ThinkingStream } from "./thinking-stream"
+import { generateWithGemini } from "@/lib/gemini"
+import { chatStorage, Chat, Project, ChatMessage } from "@/lib/chat-storage"
 
 interface ChatInterfaceProps {
   chatId: string
   onClose: () => void
   initialPrompt?: string | null
+  currentProject?: Project | null
+  onYamlGenerated?: (yamlData: any) => void
+  onInitialPromptUsed?: () => void
 }
 
-interface Message {
-  id: string
-  type: "user" | "assistant"
-  content: string
-  timestamp: Date
-  responseType?: string
-  data?: any
+// Use the ChatMessage interface from storage, extend it with local-only properties
+interface Message extends ChatMessage {
+  // Local display properties can be added here if needed
 }
 
-export function ChatInterface({ chatId, onClose, initialPrompt }: ChatInterfaceProps) {
+export function ChatInterface({ chatId, onClose, initialPrompt, currentProject, onYamlGenerated, onInitialPromptUsed }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
+  const [currentThoughts, setCurrentThoughts] = useState<string[]>([])
+  const messageCounterRef = useRef(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
+  const processingRef = useRef(false)
 
-  const sendMessage = (prompt: string) => {
-    if (!prompt.trim()) return
+  const generateId = useCallback(() => {
+    const id = `msg-${chatId}-${messageCounterRef.current}-${Date.now()}`
+    messageCounterRef.current += 1
+    return id
+  }, [chatId])
 
+  // Load chat messages when chatId changes
+  useEffect(() => {
+    messageCounterRef.current = 0
+    const chat = chatStorage.getChat(chatId)
+    if (chat) {
+      setMessages(chat.messages.map(msg => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp) // Ensure dates are Date objects
+      })))
+    } else {
+      setMessages([])
+    }
+  }, [chatId])
+
+  const sendMessage = async (prompt: string) => {
+    if (!prompt.trim() || isGenerating || processingRef.current) return // Prevent sending if already generating
+
+    processingRef.current = true
+    
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: generateId(),
       type: "user",
       content: prompt,
       timestamp: new Date(),
     }
 
-    setMessages((prev) => [...prev, userMessage])
+    const newMessages = [...messages, userMessage]
+    setMessages(newMessages)
     setInputValue("")
     setIsGenerating(true)
+    setCurrentThoughts([])
+
+    // Save user message to storage
+    const chat = chatStorage.getChat(chatId)
+    if (chat) {
+      chatStorage.saveChat({ ...chat, messages: newMessages })
+    }
+    
+    // Simulate progressive thinking
+    const baseThinkingSteps = [
+      "Analyzing the Harness request...",
+      "Determining the best Harness configuration approach...",
+      "Considering Harness best practices and security...",
+      "Structuring the YAML configuration...",
+      "Finalizing the response..."
+    ]
+    
+    const thinkingSteps = messages.length > 0 
+      ? ["Reviewing conversation history...", ...baseThinkingSteps]
+      : baseThinkingSteps
+    
+    // Add thoughts progressively during generation
+    thinkingSteps.forEach((thought, index) => {
+      setTimeout(() => {
+        setCurrentThoughts(prev => [...prev, thought])
+      }, index * 800)
+    })
 
     const actionType =
       chatId.includes("new-") && chatId.includes("-chat") ? chatId.replace("new-", "").replace("-chat", "") : undefined
 
-    setTimeout(() => {
-      const response = generateDeployableYAML(prompt, actionType)
+    // Build conversation history from current messages
+    const conversationHistory = newMessages.map(msg => ({
+      role: msg.type === "user" ? "user" as const : "assistant" as const,
+      content: msg.content
+    }))
+
+    // Get project context if in a project
+    let projectContext: any[] = []
+    if (currentProject) {
+      const projectMessages = chatStorage.getProjectContext(currentProject.id)
+      projectContext = projectMessages.map(msg => ({
+        role: msg.type === "user" ? "user" as const : "assistant" as const,
+        content: msg.content
+      }))
+    }
+
+    try {
+      const response = await generateWithGemini(prompt, actionType, conversationHistory, projectContext)
       const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: generateId(),
         type: "assistant",
         content: response.content,
         timestamp: new Date(),
         responseType: response.type,
         data: response.data,
+        usedWebSearch: response.usedWebSearch,
+        thoughts: response.thoughts,
       }
-      setMessages((prev) => [...prev, assistantMessage])
+      const finalMessages = [...newMessages, assistantMessage]
+      setMessages(finalMessages)
+
+      // Notify parent about YAML generation
+      if (response.data?.yaml && onYamlGenerated) {
+        onYamlGenerated(response.data)
+      }
+
+      // Save assistant message to storage
+      const updatedChat = chatStorage.getChat(chatId)
+      if (updatedChat) {
+        // Update chat title if it's still "New Chat"
+        const chatTitle = updatedChat.title === 'New Chat' && finalMessages.length > 0
+          ? prompt.slice(0, 50) + (prompt.length > 50 ? '...' : '')
+          : updatedChat.title
+
+        chatStorage.saveChat({ 
+          ...updatedChat, 
+          messages: finalMessages,
+          title: chatTitle
+        })
+      }
+    } catch (error) {
+      console.error("Error generating response:", error)
+      const errorMessage: Message = {
+        id: generateId(),
+        type: "assistant",
+        content: "Sorry, I encountered an error while processing your request. Please try again.",
+        timestamp: new Date(),
+        responseType: "error",
+        data: null,
+      }
+      setMessages((prev) => [...prev, errorMessage])
+    } finally {
       setIsGenerating(false)
-    }, 1500)
+      setCurrentThoughts([])
+      processingRef.current = false
+    }
   }
 
   useEffect(() => {
-    if (initialPrompt && messages.length === 0) {
+    if (initialPrompt && messages.length === 0 && !isGenerating) {
       sendMessage(initialPrompt)
+      onInitialPromptUsed?.() // Clear the initial prompt from parent
     }
-  }, [initialPrompt])
+  }, [initialPrompt, messages.length, isGenerating, onInitialPromptUsed])
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -76,234 +187,6 @@ export function ChatInterface({ chatId, onClose, initialPrompt }: ChatInterfaceP
     }
   }, [messages])
 
-  const generateDeployableYAML = (query: string, actionType?: string) => {
-    const lowerQuery = query.toLowerCase()
-    const type =
-      actionType ||
-      (lowerQuery.includes("pipeline") && "pipeline") ||
-      (lowerQuery.includes("service") && "service") ||
-      (lowerQuery.includes("environment") && "environment") ||
-      (lowerQuery.includes("connector") && "connector") ||
-      (lowerQuery.includes("cost") && "cost") ||
-      (lowerQuery.includes("dashboard") && "dashboard") ||
-      (lowerQuery.includes("docs") && "docs") ||
-      "general"
-
-    switch (type) {
-      case "pipeline":
-        return {
-          content: "I'll create a deployable CI/CD pipeline. Here's the YAML configuration:",
-          type: "pipeline",
-          data: {
-            pipelineName: "Production Deployment Pipeline",
-            stages: ["Build", "Test", "Security Scan", "Deploy"],
-            yaml: `pipeline:
-  name: Production Deployment Pipeline
-  identifier: prod_deployment_pipeline
-  projectIdentifier: default_project
-  orgIdentifier: default
-  tags: {}
-  stages:
-    - stage:
-        name: Build
-        identifier: build
-        description: ""
-        type: CI
-        spec:
-          cloneCodebase: true
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Cloud
-            spec: {}
-          execution:
-            steps:
-              - step:
-                  type: Run
-                  name: Build Application
-                  identifier: build_app
-                  spec:
-                    shell: Bash
-                    command: |-
-                      echo "Building application..."
-                      npm install
-                      npm run build
-    - stage:
-        name: Deploy
-        identifier: deploy
-        description: ""
-        type: Deployment
-        spec:
-          deploymentType: Kubernetes
-          service:
-            serviceRef: myapp_service
-          environment:
-            environmentRef: production
-            deployToAll: false
-            infrastructureDefinitions:
-              - identifier: k8s_infra
-          execution:
-            steps:
-              - step:
-                  type: K8sRollingDeploy
-                  name: Rolling Deployment
-                  identifier: rolling_deploy
-                  spec:
-                    skipDryRun: false`,
-            previewUrl: "/harness-ui-preview/pipeline",
-          },
-        }
-      case "service":
-        return {
-          content: "I'll create a new Harness service configuration. Here is the YAML:",
-          type: "service",
-          data: {
-            serviceName: "my-microservice",
-            serviceType: "Kubernetes",
-            artifacts: ["Docker Image"],
-            yaml: `service:
-  name: my-microservice
-  identifier: my_microservice
-  serviceDefinition:
-    spec:
-      manifests:
-        - manifest:
-            identifier: k8s_manifest
-            type: K8sManifest
-            spec:
-              store:
-                type: Git
-                spec:
-                  connectorRef: github_connector
-                  gitFetchType: Branch
-                  paths:
-                    - k8s/
-                  repoName: my-app-repo
-                  branch: main
-              skipResourceVersioning: false
-      artifacts:
-        primary:
-          primaryArtifactRef: docker_image
-          sources:
-            - spec:
-                connectorRef: docker_hub_connector
-                imagePath: myorg/myapp
-                tag: <+input>
-              identifier: docker_image
-              type: DockerRegistry
-    type: Kubernetes`,
-            previewUrl: "/harness-ui-preview/service",
-          },
-        }
-      case "cost":
-        return {
-          content: "I'll create a cost analysis perspective for you. Here's your CCM configuration:",
-          type: "cost",
-          data: {
-            perspectiveName: "Multi-Cloud Cost Analysis",
-            totalCost: "$12,450",
-            savings: "$3,200",
-            recommendations: 5,
-          },
-        }
-      case "dashboard":
-        return {
-          content: "I'll create a custom monitoring dashboard for you:",
-          type: "dashboard",
-          data: {
-            dashboardName: "Application Performance Dashboard",
-            widgets: ["CPU Usage", "Memory Usage", "Request Rate", "Error Rate"],
-          },
-        }
-      case "docs":
-        return {
-          content: "Based on the Harness documentation, here's what I found:",
-          type: "docs",
-          data: {
-            topic: "Pipeline Creation",
-            sections: ["Getting Started", "Pipeline Configuration", "Stage Types", "Best Practices"],
-          },
-        }
-      case "environment":
-        return {
-          content:
-            "I'll create an environment configuration for your deployments. This YAML is ready to deploy to Harness:",
-          type: "environment",
-          data: {
-            environmentName: "production",
-            environmentType: "Production",
-            yaml: `environment:
-    name: production
-    identifier: production
-    description: "Production environment for application deployment"
-    tags:
-      env: "prod"
-      team: "platform"
-    type: Production
-    orgIdentifier: default
-    projectIdentifier: default_project
-    variables:
-      - name: ENVIRONMENT
-        type: String
-        value: production
-      - name: REPLICAS
-        type: String
-        value: "3"
-    overrides:
-      manifests:
-        - manifest:
-            identifier: values_override
-            type: Values
-            spec:
-              store:
-                type: Git
-                spec:
-                  connectorRef: github_connector
-                  gitFetchType: Branch
-                  paths:
-                    - "values/prod-values.yaml"
-                  repoName: my-app-config
-                  branch: main`,
-            previewUrl: "/harness-ui-preview/environment",
-          },
-        }
-      case "connector":
-        return {
-          content: "I'll create a connector configuration to integrate with your cloud provider. Here is the YAML:",
-          type: "infrastructure", // Connectors are part of infrastructure
-          data: {
-            resourceType: "AWS Connector",
-            environment: "All Environments",
-            secrets: ["aws_access_key", "aws_secret_key"],
-            yaml: `connector:
-    name: aws-production-connector
-    identifier: aws_production_connector
-    description: "AWS connector for production workloads"
-    orgIdentifier: default
-    projectIdentifier: default_project
-    type: Aws
-    spec:
-      credential:
-        type: ManualConfig
-        spec:
-          accessKey: <+secrets.getValue("aws_access_key")>
-          secretKey: <+secrets.getValue("aws_secret_key")>
-      region: us-east-1
-      executeOnDelegate: true
-      delegateSelectors:
-        - "production-delegate"`,
-            previewUrl: "/harness-ui-preview/connector",
-          },
-        }
-      default:
-        return {
-          content: "I can help with Harness pipelines, services, and more. What would you like to do?",
-          type: "general",
-          data: null,
-        }
-    }
-  }
 
   return (
     <div className="flex-1 flex flex-col h-screen">
@@ -312,7 +195,21 @@ export function ChatInterface({ chatId, onClose, initialPrompt }: ChatInterfaceP
           <Button variant="ghost" size="icon" onClick={onClose} className="text-gray-400 hover:text-white">
             <X className="h-4 w-4" />
           </Button>
-          <h1 className="font-semibold text-lg">{chatId.replace("new-", "").replace("-chat", "")}</h1>
+          <div className="flex items-center gap-2">
+            {currentProject && (
+              <>
+                <div 
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: currentProject.color }}
+                />
+                <span className="text-sm text-gray-400">{currentProject.name}</span>
+                <span className="text-gray-600">•</span>
+              </>
+            )}
+            <h1 className="font-semibold text-lg">
+              {currentProject ? 'Project Chat' : chatId.replace("new-", "").replace("-chat", "")}
+            </h1>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
@@ -329,23 +226,94 @@ export function ChatInterface({ chatId, onClose, initialPrompt }: ChatInterfaceP
           {messages.map((message) => (
             <div key={message.id} className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}>
               <div
-                className={`max-w-3xl rounded-lg p-4 ${
-                  message.type === "user" ? "bg-cyan-600 text-white" : "bg-gray-800 text-gray-100"
+                className={`${
+                  message.type === "user" ? "bg-cyan-600 text-white max-w-3xl rounded-lg p-4" : ""
                 }`}
               >
-                <p className="mb-2 whitespace-pre-wrap">{message.content}</p>
-                {message.responseType && message.data && (
-                  <HarnessResponseCard responseType={message.responseType} data={message.data} />
+                {message.type === "assistant" ? (
+                  <div className="w-full space-y-4">
+                    <div className="flex gap-2">
+                      {message.usedWebSearch && (
+                        <div className="flex items-center gap-2 text-xs text-cyan-400 bg-gray-800 rounded-lg p-3">
+                          <Search className="h-3 w-3" />
+                          <span>Enhanced with web search</span>
+                        </div>
+                      )}
+                      {messages.indexOf(message) > 0 && (
+                        <div className="flex items-center gap-2 text-xs text-green-400 bg-gray-800 rounded-lg p-3">
+                          <MessageCircle className="h-3 w-3" />
+                          <span>Using conversation context</span>
+                        </div>
+                      )}
+                      {currentProject && (
+                        <div className="flex items-center gap-2 text-xs text-purple-400 bg-gray-800 rounded-lg p-3">
+                          <div 
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: currentProject.color }}
+                          />
+                          <span>Using {currentProject.name} project context</span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Show thinking stream if thoughts are present */}
+                    {message.thoughts && message.thoughts.length > 0 && (
+                      <ThinkingStream
+                        thoughts={message.thoughts}
+                        isThinking={false}
+                        isComplete={true}
+                      />
+                    )}
+                    
+                    {/* All messages display the same way - YAML will be in right panel */}
+                    <div className="bg-gray-800 text-gray-100 rounded-lg p-4 max-w-3xl">
+                      <MarkdownRenderer content={message.content} />
+                      
+                      {/* Show indicator for YAML messages */}
+                      {message.data?.yaml && (
+                        <>
+                          <div className="mt-3 flex items-center gap-2 text-xs text-cyan-400 bg-cyan-950/20 rounded-lg p-2 border border-cyan-800/30">
+                            <Code2 className="h-3 w-3" />
+                            <span>Configuration available in right panel</span>
+                          </div>
+                          <div className="mt-4">
+                            <HarnessResponseCard responseType={message.responseType} data={message.data} />
+                          </div>
+                        </>
+                      )}
+                      
+                      {/* Keep the old response card for non-YAML data */}
+                      {message.responseType && 
+                       message.data && 
+                       !message.data.yaml &&
+                       message.responseType !== "general" && (
+                        <div className="mt-4">
+                          <HarnessResponseCard responseType={message.responseType} data={message.data} />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <p className="whitespace-pre-wrap">{message.content}</p>
                 )}
               </div>
             </div>
           ))}
           {isGenerating && (
             <div className="flex justify-start">
-              <div className="bg-gray-800 rounded-lg p-4 max-w-3xl">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-                  <span className="text-gray-400 ml-2">Canary is thinking...</span>
+              <div className="w-full space-y-4">
+                {/* Live thinking stream */}
+                <ThinkingStream
+                  thoughts={currentThoughts}
+                  isThinking={true}
+                  isComplete={false}
+                />
+                
+                <div className="bg-gray-800 rounded-lg p-4 max-w-3xl">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                    <span className="text-gray-400 ml-2">Canary is generating response...</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -359,7 +327,12 @@ export function ChatInterface({ chatId, onClose, initialPrompt }: ChatInterfaceP
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && sendMessage(inputValue)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey && !isGenerating && !processingRef.current) {
+                  e.preventDefault()
+                  sendMessage(inputValue)
+                }
+              }}
               placeholder="Ask Canary to build, edit, or explain..."
               className="w-full h-12 pl-4 pr-20 bg-gray-800 border-gray-700 text-white placeholder-gray-400 rounded-xl"
             />
@@ -371,7 +344,7 @@ export function ChatInterface({ chatId, onClose, initialPrompt }: ChatInterfaceP
                 size="icon"
                 className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg h-9 w-9"
                 onClick={() => sendMessage(inputValue)}
-                disabled={!inputValue.trim() || isGenerating}
+                disabled={!inputValue.trim() || isGenerating || processingRef.current}
               >
                 <Send className="h-4 w-4" />
               </Button>
