@@ -61,14 +61,20 @@ export default function HomePage() {
   }, [router])
 
   return (
-    <div className="flex h-screen bg-gray-950">
-      <ChatSidebar
-        onChatSelect={handleChatSelect}
-        onNewChat={handleNewChat}
-        onNewProject={handleNewProject}
-      />
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
+      {/* Sidebar - hidden on mobile, visible on desktop */}
+      <div className="hidden lg:block">
+        <ChatSidebar
+          onChatSelect={handleChatSelect}
+          onNewChat={handleNewChat}
+          onNewProject={handleNewProject}
+        />
+      </div>
       
-      <LandingPage onStartChat={handleStartChat} />
+      {/* Main content */}
+      <div className="flex-1 min-w-0">
+        <LandingPage onStartChat={handleStartChat} />
+      </div>
 
       <NewProjectModal
         isOpen={showNewProjectModal}

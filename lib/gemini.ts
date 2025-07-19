@@ -81,6 +81,13 @@ Available Harness resource types: pipeline, service, environment, connector, inf
 
 Current request type: ${actionType || "general"}
 
+FILE PROCESSING CAPABILITIES:
+- When YAML files are attached, analyze their structure and content
+- Provide specific feedback on Harness configurations found in attached files
+- Suggest improvements, optimizations, or corrections for uploaded YAML
+- Compare attached configurations with Harness best practices
+- If multiple files are attached, analyze relationships between them
+
 Guidelines for Harness YAML generation:
 - Generate valid Harness YAML configurations following official schema
 - Include realistic Harness identifiers, names, and configurations  
@@ -97,6 +104,12 @@ Response Instructions:
 - CONTEXT AWARENESS: Consider both project context and conversation history to provide relevant, contextual responses
 - PROJECT CONTEXT: If working within a project, reference and build upon previous configurations from other chats in the same project
 - CONVERSATION CONTEXT: Build upon the current chat's conversation flow
+- FILE ANALYSIS: When YAML files are attached, carefully analyze their content:
+  * Identify the Harness resource type (pipeline, service, environment, etc.)
+  * Check for syntax errors or misconfigurations
+  * Suggest improvements and best practices
+  * Explain what the configuration does
+  * Validate against Harness schema requirements
 - Reference earlier messages or project discussions if the user is asking for modifications or follow-ups
 - For Harness YAML configurations: Provide a well-formatted explanation followed by the YAML
 - For general Harness questions: Provide helpful information about Harness platform

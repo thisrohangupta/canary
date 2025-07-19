@@ -12,7 +12,8 @@ An intelligent chat interface powered by Google's Gemini 2.0 Flash, designed spe
 - **🚀 Harness-Focused** - Specialized in DevOps pipeline and infrastructure configuration
 - **📁 Project Organization** - Organize conversations by projects with persistent storage
 - **💻 YAML Generation** - Generate production-ready Harness configurations
-- **🔗 Direct Deploy** - One-click deploy to Harness platform (app.harness.io)
+- **🔗 Direct Deploy** - One-click deploy to Harness platform via API integration
+- **🎯 Smart Detection** - Automatically detects pipeline, service, connector, environment, and infrastructure YAML
 - **📱 Responsive Design** - Works seamlessly on desktop and mobile
 - **🛡️ Error Handling** - Graceful handling of rate limits and API errors
 - **💡 Thinking Process** - See AI's reasoning with expandable thought streams
@@ -56,7 +57,14 @@ pnpm install
 Create a `.env.local` file in the project root:
 
 ```env
+# Required: Google Gemini API key
 NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
+
+# Optional: Harness deployment integration (for deploy to Harness feature)
+NEXT_PUBLIC_HARNESS_API_KEY=your_harness_api_key_here
+NEXT_PUBLIC_HARNESS_ACCOUNT_ID=your_harness_account_id
+NEXT_PUBLIC_HARNESS_ORG_ID=your_harness_org_id
+NEXT_PUBLIC_HARNESS_PROJECT_ID=your_harness_project_id
 ```
 
 **Get your API key:**
@@ -202,6 +210,10 @@ docker run -p 3000:3000 -e NEXT_PUBLIC_GEMINI_API_KEY=your_key canary
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `NEXT_PUBLIC_GEMINI_API_KEY` | Google Gemini API key | Yes |
+| `NEXT_PUBLIC_HARNESS_API_KEY` | Harness API key for deployment | No |
+| `NEXT_PUBLIC_HARNESS_ACCOUNT_ID` | Harness account identifier | No |
+| `NEXT_PUBLIC_HARNESS_ORG_ID` | Harness organization identifier | No |
+| `NEXT_PUBLIC_HARNESS_PROJECT_ID` | Harness project identifier | No |
 
 ### Rate Limits
 

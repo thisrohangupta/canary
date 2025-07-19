@@ -27,17 +27,17 @@ export function ThinkingStream({ thoughts, isThinking, isComplete }: ThinkingStr
   if (thoughts.length === 0 && !isThinking) return null
 
   return (
-    <div className="mb-4 border border-blue-500/30 rounded-lg bg-blue-950/20 overflow-hidden">
-      <div className="flex items-center justify-between p-3 border-b border-blue-500/20">
+    <div className="mb-4 border border-blue-200 rounded-lg bg-blue-50 overflow-hidden">
+      <div className="flex items-center justify-between p-3 border-b border-blue-200">
         <div className="flex items-center gap-2">
           <Brain 
-            className={`h-4 w-4 text-blue-400 ${isThinking ? 'animate-pulse' : ''}`} 
+            className={`h-4 w-4 text-blue-600 ${isThinking ? 'animate-pulse' : ''}`} 
           />
-          <span className="text-sm font-medium text-blue-300">
+          <span className="text-sm font-medium text-blue-900">
             {isThinking ? "Canary is thinking..." : isComplete ? "Thinking complete" : "Thoughts"}
           </span>
           {displayedThoughts.length > 0 && (
-            <span className="text-xs text-blue-400/70">
+            <span className="text-xs text-blue-600">
               ({displayedThoughts.length} {displayedThoughts.length === 1 ? 'thought' : 'thoughts'})
             </span>
           )}
@@ -46,7 +46,7 @@ export function ThinkingStream({ thoughts, isThinking, isComplete }: ThinkingStr
           variant="ghost"
           size="sm"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="text-blue-400 hover:text-blue-300 h-6 w-6 p-0"
+          className="text-blue-600 hover:text-blue-800 hover:bg-blue-100 h-6 w-6 p-0"
         >
           {isExpanded ? (
             <ChevronUp className="h-3 w-3" />
@@ -61,21 +61,21 @@ export function ThinkingStream({ thoughts, isThinking, isComplete }: ThinkingStr
           {displayedThoughts.map((thought, index) => (
             <div
               key={index}
-              className="text-sm text-blue-200/90 animate-in fade-in slide-in-from-left-2 duration-300"
+              className="text-sm text-blue-800 animate-in fade-in slide-in-from-left-2 duration-300"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <span className="text-blue-400/60 mr-2">•</span>
+              <span className="text-blue-600 mr-2">•</span>
               {thought}
             </div>
           ))}
           
           {isThinking && (
-            <div className="flex items-center gap-2 text-blue-400/70">
-              <span className="text-blue-400/60">•</span>
+            <div className="flex items-center gap-2 text-blue-700">
+              <span className="text-blue-600">•</span>
               <div className="flex gap-1">
-                <div className="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                <div className="w-1 h-1 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-1 h-1 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-1 h-1 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           )}

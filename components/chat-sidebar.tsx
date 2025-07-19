@@ -134,31 +134,31 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
   }
 
   return (
-    <div className="w-80 bg-gray-900 border-r border-gray-800 flex flex-col h-full">
+    <div className="w-80 min-w-64 max-w-96 bg-white border-r border-gray-200 flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b border-gray-800">
+      <div className="p-6 border-b border-gray-200">
         {/* Home Button */}
         {pathname !== '/' && (
-          <div className="mb-4">
+          <div className="mb-6">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => router.push('/')}
-              className="text-gray-400 hover:text-white w-full justify-start"
+              className="text-gray-700 hover:text-gray-900 w-full justify-start hover:bg-gray-50 h-9 px-3 font-medium"
             >
-              <Home className="h-4 w-4 mr-2" />
+              <Home className="h-4 w-4 mr-3" />
               Home
             </Button>
           </div>
         )}
         
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-white">Chats</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-900">Chats</h2>
           <div className="flex gap-2">
             <Button
               size="sm"
               variant="ghost"
-              className="text-gray-400 hover:text-white"
+              className="text-gray-500 hover:text-gray-700 hover:bg-gray-50 h-8 w-8 p-0"
               onClick={onNewProject}
             >
               <FolderPlus className="h-4 w-4" />
@@ -167,10 +167,10 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
               <DropdownMenuTrigger asChild>
                 <Button
                   size="sm"
-                  className="bg-cyan-600 hover:bg-cyan-700"
+                  className="bg-gray-900 hover:bg-gray-800 text-white h-8 px-3 text-sm font-medium"
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  New Chat
+                  New
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -178,16 +178,16 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
                   <MessageSquare className="h-4 w-4 mr-2" />
                   General Chat
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onNewChat('pipeline')}>
+                <DropdownMenuItem onClick={() => onNewChat('pipeline')} className="text-sm">
                   Pipeline Configuration
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onNewChat('service')}>
+                <DropdownMenuItem onClick={() => onNewChat('service')} className="text-sm">
                   Service Configuration
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onNewChat('environment')}>
+                <DropdownMenuItem onClick={() => onNewChat('environment')} className="text-sm">
                   Environment Configuration
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onNewChat('connector')}>
+                <DropdownMenuItem onClick={() => onNewChat('connector')} className="text-sm">
                   Connector Configuration
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -202,14 +202,14 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search chats..."
-            className="pl-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+            className="pl-10 h-10 bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500 focus:border-gray-300 focus:ring-0 rounded-lg"
           />
         </div>
       </div>
 
       {/* Chat List */}
       <ScrollArea className="flex-1">
-        <div className="p-2 space-y-2">
+        <div className="p-4 space-y-1">
           {/* Projects */}
           {projects.map(project => {
             const projectChats = filteredChats.filter(chat => chat.projectId === project.id)
@@ -218,7 +218,7 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
             return (
               <div key={project.id} className="space-y-1">
                 <div 
-                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800 cursor-pointer group"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer group transition-colors"
                   onClick={(e) => {
                     if (e.detail === 2) {
                       // Double click - navigate to project
@@ -239,10 +239,10 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
                     style={{ backgroundColor: project.color }}
                   />
                   <Folder className="h-4 w-4 text-gray-400" />
-                  <span className="text-sm font-medium text-white truncate flex-1">
+                  <span className="text-sm font-medium text-gray-900 truncate flex-1">
                     {project.name}
                   </span>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                     {projectChats.length}
                   </span>
                   <DropdownMenu>
@@ -250,10 +250,10 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="opacity-0 group-hover:opacity-100 h-6 w-6 p-0"
+                        className="opacity-0 group-hover:opacity-100 h-6 w-6 p-0 hover:bg-gray-100"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <MoreHorizontal className="h-3 w-3" />
+                        <MoreHorizontal className="h-4 w-4 text-gray-400" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
@@ -267,7 +267,7 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
                       </DropdownMenuItem>
                       <DropdownMenuItem 
                         onClick={(e) => handleDeleteProject(project.id, e)}
-                        className="text-red-400"
+                        className="text-red-600 hover:text-red-800 hover:bg-red-50"
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete Project
@@ -280,8 +280,8 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
                 {isExpanded && projectChats.map(chat => (
                   <div
                     key={chat.id}
-                    className={`ml-6 p-2 rounded-lg cursor-pointer group ${
-                      currentChatId === chat.id ? 'bg-cyan-600' : 'hover:bg-gray-800'
+                    className={`ml-8 p-3 rounded-lg cursor-pointer group transition-colors ${
+                      currentChatId === chat.id ? 'bg-gray-900 text-white' : 'hover:bg-gray-50'
                     }`}
                     onClick={() => {
                       if (chat.projectId) {
@@ -291,23 +291,25 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
                       }
                     }}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-medium truncate ${
-                          currentChatId === chat.id ? 'text-white' : 'text-gray-200'
-                        }`}>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0 overflow-hidden">
+                        <p className={`text-sm font-medium leading-tight ${
+                          currentChatId === chat.id ? 'text-white' : 'text-gray-900'
+                        } break-words whitespace-normal`}>
                           {formatChatTitle(chat)}
                         </p>
-                        <p className={`text-xs truncate ${
-                          currentChatId === chat.id ? 'text-cyan-100' : 'text-gray-500'
-                        }`}>
+                        <p className={`text-xs mt-1 ${
+                          currentChatId === chat.id ? 'text-gray-300' : 'text-gray-500'
+                        } break-words whitespace-normal`}>
                           {formatTime(chat.updatedAt)} • {chat.messages.length} messages
                         </p>
                       </div>
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="opacity-0 group-hover:opacity-100 h-6 w-6 p-0 text-gray-400 hover:text-red-400"
+                        className={`opacity-0 group-hover:opacity-100 h-6 w-6 p-0 flex-shrink-0 hover:bg-red-50 hover:text-red-600 ${
+                          currentChatId === chat.id ? 'text-gray-400 hover:text-red-400' : 'text-gray-400'
+                        }`}
                         onClick={(e) => handleDeleteChat(chat.id, e)}
                       >
                         <Trash2 className="h-3 w-3" />
@@ -323,16 +325,17 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
           {unassignedChats.length > 0 && (
             <div className="space-y-1">
               {projects.length > 0 && (
-                <div className="flex items-center gap-2 p-2 text-xs font-medium text-gray-400 uppercase tracking-wide">
-                  <MessageSquare className="h-3 w-3" />
-                  Recent Chats
+                <div className="flex items-center gap-2 p-3 mt-4">
+                  <div className="h-px bg-gray-200 flex-1" />
+                  <span className="text-xs font-medium text-gray-500 uppercase tracking-wide px-2">Recent Chats</span>
+                  <div className="h-px bg-gray-200 flex-1" />
                 </div>
               )}
               {unassignedChats.slice(0, 15).map(chat => (
                 <div
                   key={chat.id}
-                  className={`p-2 rounded-lg cursor-pointer group ${
-                    currentChatId === chat.id ? 'bg-cyan-600' : 'hover:bg-gray-800'
+                  className={`p-3 rounded-lg cursor-pointer group transition-colors ${
+                    currentChatId === chat.id ? 'bg-gray-900 text-white' : 'hover:bg-gray-50'
                   }`}
                   onClick={() => {
                     if (chat.projectId) {
@@ -342,23 +345,25 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
                     }
                   }}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-medium truncate ${
-                        currentChatId === chat.id ? 'text-white' : 'text-gray-200'
-                      }`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                      <p className={`text-sm font-medium leading-tight ${
+                        currentChatId === chat.id ? 'text-white' : 'text-gray-900'
+                      } break-words whitespace-normal`}>
                         {formatChatTitle(chat)}
                       </p>
-                      <p className={`text-xs truncate ${
-                        currentChatId === chat.id ? 'text-cyan-100' : 'text-gray-500'
-                      }`}>
+                      <p className={`text-xs mt-1 ${
+                        currentChatId === chat.id ? 'text-gray-300' : 'text-gray-500'
+                      } break-words whitespace-normal`}>
                         {formatTime(chat.updatedAt)} • {chat.messages.length} messages
                       </p>
                     </div>
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="opacity-0 group-hover:opacity-100 h-6 w-6 p-0 text-gray-400 hover:text-red-400"
+                      className={`opacity-0 group-hover:opacity-100 h-6 w-6 p-0 flex-shrink-0 hover:bg-red-50 hover:text-red-600 ${
+                        currentChatId === chat.id ? 'text-gray-400 hover:text-red-400' : 'text-gray-400'
+                      }`}
                       onClick={(e) => handleDeleteChat(chat.id, e)}
                     >
                       <Trash2 className="h-3 w-3" />
@@ -371,12 +376,14 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
 
           {/* Empty State */}
           {filteredChats.length === 0 && (
-            <div className="text-center py-8">
-              <MessageSquare className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400 text-sm">
+            <div className="text-center py-12">
+              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MessageSquare className="h-6 w-6 text-gray-400" />
+              </div>
+              <p className="text-gray-900 text-sm font-medium mb-1">
                 {searchQuery ? 'No chats found' : 'No chats yet'}
               </p>
-              <p className="text-gray-500 text-xs mt-1">
+              <p className="text-gray-500 text-xs">
                 {searchQuery ? 'Try a different search term' : 'Start a new conversation'}
               </p>
             </div>

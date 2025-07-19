@@ -75,21 +75,21 @@ export function LandingPage({ onStartChat }: LandingPageProps) {
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 min-h-screen p-8">
+    <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-white dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 min-h-screen p-8">
       <div className="max-w-4xl w-full mx-auto text-center">
         {/* Header */}
         <div className="mb-12">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center">
-              <Rocket className="h-6 w-6 text-white" />
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-cyan-500 dark:to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25 dark:shadow-cyan-500/25">
+              <Rocket className="h-7 w-7 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-white">Canary</h1>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Canary</h1>
           </div>
           
           {/* Rotating Greeting */}
-          <div className="h-16 flex items-center justify-center">
+          <div className="h-20 flex items-center justify-center">
             <h2 
-              className={`text-4xl md:text-5xl font-light text-gray-100 transition-all duration-300 ${
+              className={`text-4xl md:text-6xl font-light bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent transition-all duration-300 ${
                 isAnimating ? 'opacity-0 transform translate-y-2' : 'opacity-100 transform translate-y-0'
               }`}
             >
@@ -97,9 +97,9 @@ export function LandingPage({ onStartChat }: LandingPageProps) {
             </h2>
           </div>
           
-          <p className="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-400 mt-6 max-w-3xl mx-auto leading-relaxed">
             Your AI assistant for Harness platform operations. Generate pipelines, services, 
-            environments, and more with natural language.
+            environments, and infrastructure configurations with natural language.
           </p>
         </div>
 
@@ -110,29 +110,29 @@ export function LandingPage({ onStartChat }: LandingPageProps) {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Ask me to create a pipeline, service configuration, or anything else..."
-              className="w-full h-14 pl-6 pr-16 text-lg bg-gray-800/80 backdrop-blur-sm border-gray-700 rounded-2xl text-white placeholder-gray-400 focus:border-cyan-500 focus:ring-cyan-500/20 transition-all"
+              className="w-full h-16 pl-6 pr-16 text-lg bg-white dark:bg-gray-800/80 backdrop-blur-sm border-gray-300 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-cyan-500 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-cyan-500/20 shadow-lg shadow-gray-900/5 dark:shadow-none transition-all"
               autoFocus
             />
             <Button
               type="submit"
               size="sm"
               disabled={!inputValue.trim()}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl h-10 px-4 transition-all disabled:opacity-50"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 text-white rounded-xl h-11 px-5 shadow-sm transition-all disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
             </Button>
           </div>
           
           {/* Quick Actions */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
-            <span className="text-sm text-gray-500">Try:</span>
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
+            <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">Popular:</span>
             {["Pipeline", "Service", "Environment", "Connector"].map((item) => (
               <Button
                 key={item}
                 variant="ghost"
                 size="sm"
                 onClick={() => setInputValue(`Create a new ${item.toLowerCase()}`)}
-                className="text-gray-400 hover:text-cyan-400 hover:bg-cyan-950/20 rounded-lg transition-all"
+                className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-cyan-400 hover:bg-blue-50 dark:hover:bg-cyan-950/20 rounded-xl transition-all border border-transparent hover:border-blue-200 dark:hover:border-cyan-800/30"
               >
                 {item}
               </Button>
@@ -141,22 +141,22 @@ export function LandingPage({ onStartChat }: LandingPageProps) {
         </form>
 
         {/* Example Prompts */}
-        <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {EXAMPLE_PROMPTS.map((example, index) => (
             <button
               key={index}
               onClick={() => handleExampleClick(example.prompt)}
-              className="group p-6 bg-gray-800/40 hover:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700/50 hover:border-gray-600 text-left transition-all duration-200 hover:transform hover:scale-[1.02]"
+              className="group p-6 bg-white dark:bg-gray-800/40 hover:bg-gray-50 dark:hover:bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700/50 hover:border-gray-300 dark:hover:border-gray-600 text-left transition-all duration-200 hover:transform hover:scale-[1.02] hover:shadow-lg shadow-gray-900/5 dark:shadow-none"
             >
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-lg flex items-center justify-center group-hover:from-cyan-500/30 group-hover:to-blue-600/30 transition-all">
-                  <example.icon className="h-5 w-5 text-cyan-400" />
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500/10 to-blue-600/10 dark:from-cyan-500/20 dark:to-blue-600/20 rounded-xl flex items-center justify-center group-hover:from-blue-500/20 group-hover:to-blue-600/20 dark:group-hover:from-cyan-500/30 dark:group-hover:to-blue-600/30 transition-all border border-blue-200/50 dark:border-cyan-500/20">
+                  <example.icon className="h-6 w-6 text-blue-600 dark:text-cyan-400" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-white font-medium mb-2 group-hover:text-cyan-400 transition-colors">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-gray-900 dark:text-white font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">
                     {example.title}
                   </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                     {example.description}
                   </p>
                 </div>
@@ -166,20 +166,30 @@ export function LandingPage({ onStartChat }: LandingPageProps) {
         </div>
 
         {/* Footer */}
-        <div className="mt-16 text-center">
-          <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-cyan-500" />
-              <span>AI-Powered</span>
+        <div className="mt-20 text-center">
+          <div className="flex flex-wrap items-center justify-center gap-8 text-sm">
+            <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+              <div className="w-8 h-8 bg-blue-100 dark:bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-blue-600 dark:text-cyan-400" />
+              </div>
+              <span className="font-medium">AI-Powered</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Code2 className="h-4 w-4 text-green-500" />
-              <span>Harness Native</span>
+            <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+              <div className="w-8 h-8 bg-green-100 dark:bg-green-500/20 rounded-lg flex items-center justify-center">
+                <Code2 className="h-4 w-4 text-green-600 dark:text-green-400" />
+              </div>
+              <span className="font-medium">Harness Native</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-yellow-500" />
-              <span>Production Ready</span>
+            <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+              <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                <Zap className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+              </div>
+              <span className="font-medium">Production Ready</span>
             </div>
+          </div>
+          
+          <div className="mt-8 text-xs text-gray-500 dark:text-gray-500">
+            Powered by Google Gemini 2.0 • Built for Harness Platform
           </div>
         </div>
       </div>

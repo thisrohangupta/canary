@@ -87,18 +87,21 @@ export default function ChatPage() {
 
   if (!chat) {
     return (
-      <div className="flex h-screen bg-gray-950">
-        <ChatSidebar
-          currentChatId={chatId}
-          onChatSelect={handleChatSelect}
-          onNewChat={handleNewChat}
-          onNewProject={handleNewProject}
-        />
+      <div className="flex h-screen bg-gray-50 overflow-hidden">
+        {/* Sidebar - hidden on mobile, visible on desktop */}
+        <div className="hidden lg:block">
+          <ChatSidebar
+            currentChatId={chatId}
+            onChatSelect={handleChatSelect}
+            onNewChat={handleNewChat}
+            onNewProject={handleNewProject}
+          />
+        </div>
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-white mb-4">Chat Not Found</h1>
-            <p className="text-gray-400 mb-6">The chat you're looking for doesn't exist.</p>
-            <Button onClick={() => router.push('/')} className="bg-cyan-600 hover:bg-cyan-700">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Chat Not Found</h1>
+            <p className="text-gray-600 mb-6">The chat you're looking for doesn't exist.</p>
+            <Button onClick={() => router.push('/')} className="bg-gray-900 hover:bg-gray-800 text-white">
               <Home className="h-4 w-4 mr-2" />
               Go Home
             </Button>
@@ -109,36 +112,39 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-950">
-      <ChatSidebar
-        currentChatId={chatId}
-        onChatSelect={handleChatSelect}
-        onNewChat={handleNewChat}
-        onNewProject={handleNewProject}
-      />
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
+      {/* Sidebar - hidden on mobile, visible on desktop */}
+      <div className="hidden lg:block">
+        <ChatSidebar
+          currentChatId={chatId}
+          onChatSelect={handleChatSelect}
+          onNewChat={handleNewChat}
+          onNewProject={handleNewProject}
+        />
+      </div>
       
-      <div className="flex-1 flex">
-        <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex min-w-0">
+        <div className="flex-1 flex flex-col min-w-0">
           {/* Navigation Header */}
-          <div className="bg-gray-900 border-b border-gray-800 px-4 py-2">
+          <div className="bg-white border-b border-gray-200 px-4 py-2">
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => router.push('/')}
-                className="text-gray-400 hover:text-white"
+                className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Home
               </Button>
               {currentProject && (
                 <>
-                  <span className="text-gray-600">/</span>
+                  <span className="text-gray-300">/</span>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => router.push(`/project/${currentProject.id}`)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                   >
                     <div 
                       className="w-3 h-3 rounded-full mr-2"
@@ -146,8 +152,8 @@ export default function ChatPage() {
                     />
                     {currentProject.name}
                   </Button>
-                  <span className="text-gray-600">/</span>
-                  <span className="text-gray-400">Chat</span>
+                  <span className="text-gray-300">/</span>
+                  <span className="text-gray-600">Chat</span>
                 </>
               )}
             </div>

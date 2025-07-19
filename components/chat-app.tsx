@@ -6,6 +6,7 @@ import { ChatSidebar } from "./chat-sidebar"
 import { NewProjectModal } from "./new-project-modal"
 import { YamlPanel } from "./yaml-panel"
 import { LandingPage } from "./landing-page"
+import { Toaster } from "sonner"
 import { chatStorage, Chat, Project } from "@/lib/chat-storage"
 
 export function ChatApp() {
@@ -141,6 +142,8 @@ export function ChatApp() {
         onClose={() => setShowNewProjectModal(false)}
         onProjectCreated={handleProjectCreated}
       />
+      
+      <Toaster position="bottom-right" />
     </div>
   )
 }
