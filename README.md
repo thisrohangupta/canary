@@ -58,7 +58,7 @@ Create a `.env.local` file in the project root:
 
 ```env
 # Required: Google Gemini API key
-NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 
 # Optional: Harness deployment integration (for deploy to Harness feature)
 NEXT_PUBLIC_HARNESS_API_KEY=your_harness_api_key_here
@@ -111,7 +111,7 @@ The app includes several optimizations:
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/canary)
 
 1. **One-Click Deploy**: Click the deploy button above
-2. **Add Environment Variables**: Set `NEXT_PUBLIC_GEMINI_API_KEY` in Vercel dashboard
+2. **Add Environment Variables**: Set `GEMINI_API_KEY` in Vercel dashboard
 3. **Deploy**: Your app will be live in minutes
 
 **Manual Vercel Deployment:**
@@ -124,7 +124,7 @@ npm install -g vercel
 vercel
 
 # Add environment variable
-vercel env add NEXT_PUBLIC_GEMINI_API_KEY
+vercel env add GEMINI_API_KEY
 ```
 
 ### Deploy to Netlify
@@ -133,7 +133,7 @@ vercel env add NEXT_PUBLIC_GEMINI_API_KEY
 2. **Build Settings**:
    - Build command: `npm run build`
    - Publish directory: `.next`
-3. **Environment Variables**: Add `NEXT_PUBLIC_GEMINI_API_KEY`
+3. **Environment Variables**: Add `GEMINI_API_KEY`
 
 ### Deploy to Railway
 
@@ -177,7 +177,7 @@ CMD ["node", "server.js"]
 ```bash
 # Build and run
 docker build -t canary .
-docker run -p 3000:3000 -e NEXT_PUBLIC_GEMINI_API_KEY=your_key canary
+docker run -p 3000:3000 -e GEMINI_API_KEY=your_key canary
 ```
 
 ## 📖 Usage Guide
@@ -209,7 +209,7 @@ docker run -p 3000:3000 -e NEXT_PUBLIC_GEMINI_API_KEY=your_key canary
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `NEXT_PUBLIC_GEMINI_API_KEY` | Google Gemini API key | Yes |
+| `GEMINI_API_KEY` | Google Gemini API key | Yes |
 | `NEXT_PUBLIC_HARNESS_API_KEY` | Harness API key for deployment | No |
 | `NEXT_PUBLIC_HARNESS_ACCOUNT_ID` | Harness account identifier | No |
 | `NEXT_PUBLIC_HARNESS_ORG_ID` | Harness organization identifier | No |

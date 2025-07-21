@@ -244,7 +244,7 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
               </div>
               <div className="space-y-2 text-sm text-yellow-700">
                 <div>1. Create a <code className="bg-yellow-200 px-1 rounded">env.local</code> file</div>
-                <div>2. Add: <code className="bg-yellow-200 px-1 rounded">NEXT_PUBLIC_GEMINI_API_KEY=your_key</code></div>
+                <div>2. Add: <code className="bg-yellow-200 px-1 rounded">GEMINI_API_KEY=your_key</code></div>
                 <div>3. Restart your development server</div>
               </div>
             </div>
