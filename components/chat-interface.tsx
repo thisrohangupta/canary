@@ -1,18 +1,19 @@
 "use client"
 
-import { useState, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect, useCallback, memo, useMemo } from "react"
+import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Paperclip, Share, RotateCcw, X, Send, Search, MessageCircle, Code2 } from "lucide-react"
-import { HarnessResponseCard } from "./harness-response-card"
-import { MarkdownRenderer } from "./markdown-renderer"
-import { YamlCanvas } from "./yaml-canvas"
-import { ThinkingStream } from "./thinking-stream"
-import { HarnessDeployButton } from "./harness-deploy-button"
 import { generateWithGemini } from "@/lib/gemini"
 import { chatStorage, Chat, Project, ChatMessage } from "@/lib/chat-storage"
 import { detectHarnessYamlsInContent } from "@/lib/yaml-detector"
+
+import { MarkdownRenderer } from "./markdown-renderer"
+import { ThinkingStream } from "./thinking-stream"
+import { HarnessResponseCard } from "./harness-response-card"
+import { HarnessDeployButton } from "./harness-deploy-button"
 
 interface ChatInterfaceProps {
   chatId: string
@@ -28,7 +29,7 @@ interface Message extends ChatMessage {
   // Local display properties can be added here if needed
 }
 
-export function ChatInterface({ chatId, onClose, initialPrompt, currentProject, onYamlGenerated, onInitialPromptUsed }: ChatInterfaceProps) {
+const ChatInterface = memo(function ChatInterface({ chatId, onClose, initialPrompt, currentProject, onYamlGenerated, onInitialPromptUsed }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
@@ -59,7 +60,7 @@ export function ChatInterface({ chatId, onClose, initialPrompt, currentProject, 
     }
   }, [chatId])
 
-  const sendMessage = async (prompt: string) => {
+  const sendMessage = useCallback(async (prompt: string) => {
     if ((!prompt.trim() && attachedFiles.length === 0) || isGenerating || processingRef.current) return // Prevent sending if already generating
     
     // Combine prompt with attached files
@@ -183,7 +184,7 @@ export function ChatInterface({ chatId, onClose, initialPrompt, currentProject, 
       setCurrentThoughts([])
       processingRef.current = false
     }
-  }
+  }, [attachedFiles, isGenerating, messages, generateId, chatId, currentProject, onYamlGenerated])
 
   useEffect(() => {
     if (initialPrompt && messages.length === 0 && !isGenerating) {
@@ -201,11 +202,11 @@ export function ChatInterface({ chatId, onClose, initialPrompt, currentProject, 
     }
   }, [messages])
 
-  const handleFileSelect = () => {
+  const handleFileSelect = useCallback(() => {
     fileInputRef.current?.click()
-  }
+  }, [])
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     if (!files) return
 
@@ -235,11 +236,11 @@ export function ChatInterface({ chatId, onClose, initialPrompt, currentProject, 
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
-  }
+  }, [])
 
-  const removeAttachedFile = (index: number) => {
+  const removeAttachedFile = useCallback((index: number) => {
     setAttachedFiles(prev => prev.filter((_, i) => i !== index))
-  }
+  }, [])
 
   return (
     <div className="flex-1 flex flex-col h-screen bg-gray-50">
@@ -504,4 +505,6 @@ export function ChatInterface({ chatId, onClose, initialPrompt, currentProject, 
       </div>
     </div>
   )
-}
+})
+
+export { ChatInterface }

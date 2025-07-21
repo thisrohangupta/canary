@@ -1,5 +1,6 @@
 "use client"
 
+import { memo } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import dynamic from 'next/dynamic'
@@ -8,17 +9,15 @@ const SyntaxHighlighter = dynamic(() => import('react-syntax-highlighter').then(
   ssr: false
 })
 
-const oneLight = dynamic(() => import('react-syntax-highlighter/dist/esm/styles/prism').then((mod) => mod.oneLight), {
-  ssr: false
-})
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 interface MarkdownRendererProps {
   content: string
 }
 
-export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+export const MarkdownRenderer = memo(function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
-    <div className="max-w-none">
+    <div className="max-w-none text-gray-900" style={{ color: '#111827' }}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -53,12 +52,12 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
         h1: ({ children }) => <h1 className="text-2xl font-bold text-gray-900 mb-4">{children}</h1>,
         h2: ({ children }) => <h2 className="text-xl font-semibold text-gray-900 mb-3">{children}</h2>,
         h3: ({ children }) => <h3 className="text-lg font-semibold text-gray-900 mb-2">{children}</h3>,
-        p: ({ children }) => <p className="text-gray-700 mb-3 leading-relaxed">{children}</p>,
-        ul: ({ children }) => <ul className="list-disc list-inside text-gray-700 mb-3 space-y-1">{children}</ul>,
-        ol: ({ children }) => <ol className="list-decimal list-inside text-gray-700 mb-3 space-y-1">{children}</ol>,
-        li: ({ children }) => <li className="text-gray-700">{children}</li>,
+        p: ({ children }) => <p className="text-gray-900 mb-3 leading-relaxed" style={{ color: '#111827' }}>{children}</p>,
+        ul: ({ children }) => <ul className="list-disc list-inside text-gray-900 mb-3 space-y-1">{children}</ul>,
+        ol: ({ children }) => <ol className="list-decimal list-inside text-gray-900 mb-3 space-y-1">{children}</ol>,
+        li: ({ children }) => <li className="text-gray-900">{children}</li>,
         strong: ({ children }) => <strong className="font-semibold text-gray-900">{children}</strong>,
-        em: ({ children }) => <em className="italic text-gray-600">{children}</em>,
+        em: ({ children }) => <em className="italic text-gray-800">{children}</em>,
         blockquote: ({ children }) => (
           <blockquote className="border-l-4 border-blue-500 pl-4 py-2 bg-blue-50 rounded-r-lg mb-3">
             {children}
@@ -80,4 +79,4 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       </ReactMarkdown>
     </div>
   )
-}
+})

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, memo, useCallback, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -16,7 +16,7 @@ interface HarnessDeployButtonProps {
   yamlInfo: HarnessYamlInfo
 }
 
-export function HarnessDeployButton({ yamlInfo }: HarnessDeployButtonProps) {
+export const HarnessDeployButton = memo(function HarnessDeployButton({ yamlInfo }: HarnessDeployButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isDeploying, setIsDeploying] = useState(false)
   const [deploymentResult, setDeploymentResult] = useState<DeploymentResult | null>(null)
@@ -36,7 +36,7 @@ export function HarnessDeployButton({ yamlInfo }: HarnessDeployButtonProps) {
   const [environmentId, setEnvironmentId] = useState("")
   const [type, setType] = useState("")
 
-  const handleDeploy = async () => {
+  const handleDeploy = useCallback(async () => {
     if (!identifier || !name) {
       toast.error("Identifier and name are required")
       return
@@ -98,9 +98,9 @@ export function HarnessDeployButton({ yamlInfo }: HarnessDeployButtonProps) {
     } finally {
       setIsDeploying(false)
     }
-  }
+  }, [identifier, name, yamlInfo, description, type, environmentId])
 
-  const getTypeOptions = () => {
+  const typeOptions = useMemo(() => {
     switch (yamlInfo.type) {
       case 'connector':
         return [
@@ -126,9 +126,7 @@ export function HarnessDeployButton({ yamlInfo }: HarnessDeployButtonProps) {
       default:
         return []
     }
-  }
-
-  const typeOptions = getTypeOptions()
+  }, [yamlInfo.type])
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -290,4 +288,4 @@ export function HarnessDeployButton({ yamlInfo }: HarnessDeployButtonProps) {
       </DialogContent>
     </Dialog>
   )
-}
+})

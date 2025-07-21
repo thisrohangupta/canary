@@ -10,9 +10,7 @@ const SyntaxHighlighter = dynamic(() => import('react-syntax-highlighter').then(
   ssr: false
 })
 
-const oneLight = dynamic(() => import('react-syntax-highlighter/dist/esm/styles/prism').then((mod) => mod.oneLight), {
-  ssr: false
-})
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 interface YamlCanvasProps {
   title: string

@@ -1,5 +1,7 @@
 "use client"
 
+import { memo } from "react"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -18,7 +20,7 @@ interface HarnessResponseCardProps {
   data: any
 }
 
-export function HarnessResponseCard({ responseType, data }: HarnessResponseCardProps) {
+export const HarnessResponseCard = memo(function HarnessResponseCard({ responseType, data }: HarnessResponseCardProps) {
   if (responseType === "pipeline") {
     const stages = Array.isArray(data?.stages) ? data.stages : []
     return (
@@ -308,4 +310,4 @@ export function HarnessResponseCard({ responseType, data }: HarnessResponseCardP
   }
 
   return null
-}
+})
