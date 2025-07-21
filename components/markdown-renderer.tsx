@@ -2,8 +2,15 @@
 
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter/dist/esm/prism'
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import dynamic from 'next/dynamic'
+
+const SyntaxHighlighter = dynamic(() => import('react-syntax-highlighter').then((mod) => mod.Prism), {
+  ssr: false
+})
+
+const oneLight = dynamic(() => import('react-syntax-highlighter/dist/esm/styles/prism').then((mod) => mod.oneLight), {
+  ssr: false
+})
 
 interface MarkdownRendererProps {
   content: string
@@ -24,7 +31,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           if (!isInline && language) {
             return (
               <SyntaxHighlighter
-                style={oneLight as { [key: string]: React.CSSProperties }}
+                style={oneLight as any}
                 language={language}
                 PreTag="div"
                 className="rounded-lg border border-gray-200"
