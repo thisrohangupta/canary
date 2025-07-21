@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Copy, Download, Maximize2, Minimize2, Check } from "lucide-react"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter/dist/esm/prism"
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism"
 
 interface YamlCanvasProps {
