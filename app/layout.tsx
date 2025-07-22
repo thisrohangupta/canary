@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Canary - Harness AI Assistant',
-  description: 'AI-powered assistant for Harness platform operations. Generate pipelines, services, environments, and more.',
+  title: 'Canary - AI Assistant for Harness',
+  description: 'AI assistant for Harness platform operations. Get help with CI/CD pipelines, IDP services, CCM cost optimization, IR incident workflows, environments, and infrastructure configurations.',
 }
 
 export default function RootLayout({

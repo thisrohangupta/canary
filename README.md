@@ -1,6 +1,6 @@
-# Canary - AI-Powered Harness Assistant
+# Canary by Harness - AI-Powered Software Delivery Platform Assistant
 
-> **Demo Project**: Intelligent chat interface for Harness platform operations, powered by Google Gemini 2.0 AI
+> **Enterprise Demo**: Intelligent chat interface for complete Harness Software Delivery Platform operations, powered by Google Gemini 2.0 AI with full platform integration
 
 [![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js%2015-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Powered by Gemini 2.0](https://img.shields.io/badge/Powered%20by-Gemini%202.0-blue?style=for-the-badge&logo=google)](https://ai.google.dev/)
@@ -8,14 +8,16 @@
 
 ## 🎯 What This Demo Shows
 
-Canary demonstrates how AI can revolutionize DevOps workflows by providing:
+Canary by Harness demonstrates how AI can revolutionize the complete Software Delivery Platform experience by providing:
 
-1. **Intelligent Chat Interface** - Natural language interactions with AI specialized in Harness platform
-2. **YAML File Processing** - Upload and analyze Harness configurations with instant feedback
-3. **Smart Detection** - Automatically identifies pipeline, service, connector, and infrastructure configs
-4. **One-Click Deployment** - Direct integration with Harness API for instant resource creation
-5. **Project Organization** - Organize conversations by team or project for better collaboration
-6. **Real-Time Context** - AI maintains conversation history and project context for relevant responses
+1. **Complete Platform Coverage** - AI assistance across all Harness modules: CI/CD, IDP, CCM, IR, FF, and STO
+2. **Intelligent Chat Interface** - Natural language interactions with AI specialized in the entire Harness ecosystem
+3. **YAML File Processing** - Upload and analyze any Harness configuration with instant feedback and validation
+4. **Smart Detection** - Automatically identifies pipelines, services, connectors, environments, and infrastructure configs
+5. **One-Click Deployment** - Direct integration with Harness API for instant resource creation across all modules
+6. **Enterprise Organization** - Team workspaces and project-based conversations for large-scale collaboration
+7. **Real-Time Context** - AI maintains conversation history and project context for relevant, contextual responses
+8. **Harness Design System** - Complete UI alignment with Harness platform aesthetics and user experience patterns
 
 ## 🏗️ Architecture Overview
 

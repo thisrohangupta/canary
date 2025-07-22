@@ -16,7 +16,14 @@ import {
   ChevronDown,
   ChevronRight,
   Trash2,
-  Home
+  Home,
+  Rocket,
+  GitBranch,
+  Building2,
+  DollarSign,
+  AlertTriangle,
+  Flag,
+  Shield
 } from "lucide-react"
 import { chatStorage, Chat, Project, PROJECT_COLORS } from "@/lib/chat-storage"
 import {
@@ -135,11 +142,21 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
 
   return (
     <div className="w-80 min-w-64 max-w-96 bg-white border-r border-gray-200 flex flex-col h-full overflow-hidden">
-      {/* Header */}
+      {/* Clean Header */}
       <div className="p-6 border-b border-gray-200">
+        {/* Simple Canary Logo */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center justify-center w-10 h-10 bg-blue-50 rounded-xl border border-blue-200">
+            <Rocket className="h-5 w-5 text-blue-600" />
+          </div>
+          <div className="text-left">
+            <h1 className="text-lg font-semibold text-gray-900">Canary</h1>
+          </div>
+        </div>
+
         {/* Home Button */}
         {pathname !== '/' && (
-          <div className="mb-6">
+          <div className="mb-4">
             <Button
               variant="ghost"
               size="sm"
@@ -153,7 +170,7 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
         )}
         
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">Chats</h2>
+          <h2 className="text-lg font-semibold text-gray-900">Chats</h2>
           <div className="flex gap-2">
             <Button
               size="sm"
@@ -179,10 +196,20 @@ export function ChatSidebar({ currentChatId, onChatSelect, onNewChat, onNewProje
                   General Chat
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onNewChat('pipeline')} className="text-sm">
-                  Pipeline Configuration
+                  <GitBranch className="h-4 w-4 mr-2 text-blue-600" />
+                  CI/CD Pipeline
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onNewChat('service')} className="text-sm">
-                  Service Configuration
+                  <Building2 className="h-4 w-4 mr-2 text-purple-600" />
+                  IDP Service
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onNewChat('ccm')} className="text-sm">
+                  <DollarSign className="h-4 w-4 mr-2 text-green-600" />
+                  CCM Cost Optimization
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onNewChat('incident')} className="text-sm">
+                  <AlertTriangle className="h-4 w-4 mr-2 text-red-600" />
+                  IR Incident Response
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onNewChat('environment')} className="text-sm">
                   Environment Configuration

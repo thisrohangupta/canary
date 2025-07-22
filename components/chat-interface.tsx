@@ -346,12 +346,12 @@ export function ChatInterface({
     <div className="flex-1 flex flex-col h-screen bg-gray-50">
       
       {/* ============================================= */}
-      {/* HEADER BAR */}
+      {/* HEADER BAR - Clean Light Mode */}
       {/* ============================================= */}
-      <div className="border-b border-gray-200 bg-white/95 backdrop-blur-sm sticky top-0 z-10">
+      <div className="border-b border-gray-200 bg-white sticky top-0 z-10 shadow-sm">
         <div className="px-6 py-4 flex items-center justify-between">
           
-          {/* Left side - Close button and title */}
+          {/* Left side - Close button and simple branding */}
           <div className="flex items-center gap-4">
             <Button 
               variant="ghost" 
@@ -363,33 +363,38 @@ export function ChatInterface({
             </Button>
             
             <div className="flex items-center gap-3">
+              {/* Simple Canary Logo */}
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center border border-blue-200">
+                  <MessageCircle className="h-4 w-4 text-blue-600" />
+                </div>
+                <div className="text-left">
+                  <h1 className="font-semibold text-lg text-gray-900">Canary</h1>
+                </div>
+              </div>
+              
               {/* Project indicator (if in project context) */}
               {currentProject && (
                 <>
-                  <div className="flex items-center gap-2 px-2 py-1 rounded-full bg-gray-100">
+                  <div className="w-1 h-1 rounded-full bg-gray-300 mx-2" />
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-50 border border-gray-200">
                     <div 
                       className="w-2 h-2 rounded-full"
                       style={{ backgroundColor: currentProject.color }}
                     />
-                    <span className="text-xs font-medium text-gray-700">{currentProject.name}</span>
+                    <span className="text-sm font-medium text-gray-700">{currentProject.name}</span>
                   </div>
-                  <div className="w-1 h-1 rounded-full bg-gray-300" />
                 </>
               )}
-              
-              {/* Chat title */}
-              <h1 className="font-semibold text-lg text-gray-900">
-                {currentProject ? 'Project Chat' : 'Harness Assistant'}
-              </h1>
             </div>
           </div>
           
-          {/* Right side - Action buttons */}
+          {/* Right side - Clean action buttons */}
           <div className="flex items-center gap-2">
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 h-8 px-3"
+              className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 h-8 px-3 hidden sm:flex"
             >
               <Share className="h-4 w-4 mr-2" />
               Share
@@ -595,7 +600,7 @@ export function ChatInterface({
                   sendMessage(inputValue)
                 }
               }}
-              placeholder="Ask Canary about Harness pipelines, deployments, or configurations... (Attach .yaml/.yml files with the paperclip icon)"
+              placeholder="Ask about CI/CD pipelines, IDP services, CCM cost optimization, IR incident workflows, or any Harness configurations... (Attach .yaml/.yml files with 📎)"
               className="w-full h-12 sm:h-14 pl-4 sm:pl-6 pr-20 sm:pr-24 bg-white border-gray-200 text-gray-900 placeholder-gray-500 rounded-xl shadow-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200"
             />
             
@@ -633,9 +638,9 @@ export function ChatInterface({
             </div>
           </div>
           
-          {/* Help text */}
+          {/* Enhanced help text */}
           <div className="mt-3 text-xs text-gray-500 text-center">
-            Canary can generate pipelines, services, connectors, environments, and infrastructure configurations for Harness • Press Enter to send • Attach .yaml/.yml files with 📎
+            Generate CI/CD pipelines, IDP services, CCM policies, IR workflows, environments, and infrastructure configurations • Press Enter to send • Attach .yaml/.yml files with 📎
           </div>
         </div>
       </div>
