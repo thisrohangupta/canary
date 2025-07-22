@@ -21,7 +21,7 @@ Canary by Harness demonstrates how AI can revolutionize the complete Software De
 
 ## 🏗️ Architecture Overview
 
-```
+\`\`\`
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   AI Service    │    │   Harness API   │
 │                 │    │                 │    │                 │
@@ -40,7 +40,7 @@ Canary by Harness demonstrates how AI can revolutionize the complete Software De
                     │ • Projects      │
                     │ • User Prefs    │
                     └─────────────────┘
-```
+\`\`\`
 
 ## ✨ Key Features Demonstrated
 
@@ -87,15 +87,15 @@ Canary by Harness demonstrates how AI can revolutionize the complete Software De
 - Harness account with API access (optional for deploy features)
 
 ### 1. Clone and Install
-```bash
+\`\`\`bash
 git clone <repository-url>
 cd canary
 npm install
-```
+\`\`\`
 
 ### 2. Environment Configuration
 Create `.env.local` file:
-```env
+\`\`\`env
 # Required: Google Gemini AI
 GEMINI_API_KEY=your_gemini_api_key_here
 
@@ -104,12 +104,12 @@ NEXT_PUBLIC_HARNESS_API_KEY=your_harness_api_key
 NEXT_PUBLIC_HARNESS_ACCOUNT_ID=your_account_id
 NEXT_PUBLIC_HARNESS_ORG_ID=your_org_id
 NEXT_PUBLIC_HARNESS_PROJECT_ID=your_project_id
-```
+\`\`\`
 
 ### 3. Start Development Server
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 Open [http://localhost:3000](http://localhost:3000) to see the demo.
 
@@ -236,23 +236,23 @@ Open [http://localhost:3000](http://localhost:3000) to see the demo.
 ## 🚀 Deployment Options
 
 ### Vercel (Recommended)
-```bash
+\`\`\`bash
 npm install -g vercel
 vercel
-```
+\`\`\`
 Add environment variables in Vercel dashboard.
 
 ### Docker
-```bash
+\`\`\`bash
 docker build -t canary .
 docker run -p 3000:3000 -e GEMINI_API_KEY=your_key canary
-```
+\`\`\`
 
 ### Traditional Hosting
-```bash
+\`\`\`bash
 npm run build
 npm start
-```
+\`\`\`
 
 ## 🔮 Future Enhancements
 

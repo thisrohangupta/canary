@@ -4,13 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Copy, Download, Maximize2, Minimize2, Check } from "lucide-react"
-import dynamic from "next/dynamic"
-
-const SyntaxHighlighter = dynamic(() => import('react-syntax-highlighter').then((mod) => mod.Prism), {
-  ssr: false
-})
-
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { Highlight, themes } from "prism-react-renderer"
 
 interface YamlCanvasProps {
   title: string
@@ -46,25 +40,21 @@ export function YamlCanvas({ title, description, yaml, metadata }: YamlCanvasPro
   }
 
   return (
-    <div className={`border border-gray-200 rounded-xl bg-white shadow-lg ${
-      isExpanded ? "fixed inset-4 z-50" : "w-full"
-    } transition-all duration-200`}>
+    <div
+      className={`border border-gray-200 rounded-xl bg-white shadow-lg ${
+        isExpanded ? "fixed inset-4 z-50" : "w-full"
+      } transition-all duration-200 flex flex-col`}
+    >
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200">
         <div className="flex-1">
           <h3 className="font-semibold text-lg text-gray-900">{title}</h3>
           <p className="text-sm text-gray-600 mt-1">{description}</p>
           {metadata && (
-            <div className="flex gap-4 mt-3 text-xs text-gray-500">
-              {metadata.resourceType && (
-                <span>Type: {metadata.resourceType}</span>
-              )}
-              {metadata.environment && (
-                <span>Environment: {metadata.environment}</span>
-              )}
-              {metadata.stages && metadata.stages.length > 0 && (
-                <span>Stages: {metadata.stages.join(", ")}</span>
-              )}
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-gray-500">
+              {metadata.resourceType && <span>Type: {metadata.resourceType}</span>}
+              {metadata.environment && <span>Environment: {metadata.environment}</span>}
+              {metadata.stages && metadata.stages.length > 0 && <span>Stages: {metadata.stages.join(", ")}</span>}
             </div>
           )}
         </div>
@@ -93,54 +83,50 @@ export function YamlCanvas({ title, description, yaml, metadata }: YamlCanvasPro
             className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
             onClick={() => setIsExpanded(!isExpanded)}
           >
-            {isExpanded ? (
-              <>
-                <Minimize2 className="h-4 w-4" />
-                <span className="ml-2">Minimize</span>
-              </>
-            ) : (
-              <>
-                <Maximize2 className="h-4 w-4" />
-                <span className="ml-2">Expand</span>
-              </>
-            )}
+            {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+            <span className="ml-2">{isExpanded ? "Minimize" : "Expand"}</span>
           </Button>
         </div>
       </div>
 
       {/* YAML Content */}
-      <ScrollArea className={isExpanded ? "h-[calc(100vh-8rem)]" : "h-96"}>
-        <div className="p-0">
-          <SyntaxHighlighter
-            language="yaml"
-            style={oneLight as any}
-            customStyle={{
-              margin: 0,
-              background: "#fafafa",
-              fontSize: "14px",
-              lineHeight: "1.6",
-              fontFamily: "'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace",
-            }}
-            showLineNumbers={true}
-            wrapLines={true}
-            lineNumberStyle={{
-              color: "#9ca3af",
-              backgroundColor: "#f9fafb",
-              paddingLeft: "12px",
-              paddingRight: "12px",
-              borderRight: "1px solid #e5e7eb",
-              minWidth: "48px",
-            }}
-          >
-            {yaml}
-          </SyntaxHighlighter>
-        </div>
-      </ScrollArea>
+      <div className="flex-grow overflow-hidden">
+        <ScrollArea className={isExpanded ? "h-[calc(100vh-12rem)]" : "h-96"}>
+          <Highlight theme={themes.oneLight} code={yaml} language="yaml">
+            {({ className, style, tokens, getLineProps, getTokenProps }) => (
+              <pre
+                className={`${className} text-sm`}
+                style={{
+                  ...style,
+                  fontFamily: "'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace",
+                  margin: 0,
+                  backgroundColor: "#fafafa",
+                  float: "left",
+                  minWidth: "100%",
+                }}
+              >
+                {tokens.map((line, i) => (
+                  <div key={i} {...getLineProps({ line, key: i })} className="flex">
+                    <span className="text-right select-none text-gray-400 w-12 pr-4 border-r border-gray-200 bg-gray-50">
+                      {i + 1}
+                    </span>
+                    <span className="flex-1 pl-4">
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token, key })} />
+                      ))}
+                    </span>
+                  </div>
+                ))}
+              </pre>
+            )}
+          </Highlight>
+        </ScrollArea>
+      </div>
 
-      {/* Footer with metadata */}
+      {/* Footer */}
       <div className="px-6 py-3 border-t border-gray-200 bg-gray-50">
         <div className="flex justify-between items-center text-xs text-gray-500">
-          <span className="font-medium">{yaml.split('\n').length} lines</span>
+          <span className="font-medium">{yaml.trim().split("\n").length} lines</span>
           <span className="font-medium">YAML Configuration</span>
         </div>
       </div>
