@@ -1,333 +1,279 @@
-# Canary - Harness AI Assistant
+# Canary - AI-Powered Harness Assistant
 
-An intelligent chat interface powered by Google's Gemini 2.0 Flash, designed specifically for Harness platform configuration and management. Generate, configure, and deploy Harness resources with natural language conversations.
+> **Demo Project**: Intelligent chat interface for Harness platform operations, powered by Google Gemini 2.0 AI
 
 [![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js%2015-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Powered by Gemini 2.0](https://img.shields.io/badge/Powered%20by-Gemini%202.0-blue?style=for-the-badge&logo=google)](https://ai.google.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 
-## ✨ Features
+## 🎯 What This Demo Shows
 
-- **🤖 Gemini 2.0 Integration** - Latest AI model with web search capabilities
-- **🚀 Harness-Focused** - Specialized in DevOps pipeline and infrastructure configuration
-- **📁 Project Organization** - Organize conversations by projects with persistent storage
-- **💻 YAML Generation** - Generate production-ready Harness configurations
-- **🔗 Direct Deploy** - One-click deploy to Harness platform via API integration
-- **🎯 Smart Detection** - Automatically detects pipeline, service, connector, environment, and infrastructure YAML
-- **📱 Responsive Design** - Works seamlessly on desktop and mobile
-- **🛡️ Error Handling** - Graceful handling of rate limits and API errors
-- **💡 Thinking Process** - See AI's reasoning with expandable thought streams
+Canary demonstrates how AI can revolutionize DevOps workflows by providing:
 
-## 🛠️ Tech Stack
+1. **Intelligent Chat Interface** - Natural language interactions with AI specialized in Harness platform
+2. **YAML File Processing** - Upload and analyze Harness configurations with instant feedback
+3. **Smart Detection** - Automatically identifies pipeline, service, connector, and infrastructure configs
+4. **One-Click Deployment** - Direct integration with Harness API for instant resource creation
+5. **Project Organization** - Organize conversations by team or project for better collaboration
+6. **Real-Time Context** - AI maintains conversation history and project context for relevant responses
 
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS + Radix UI components
-- **AI Model**: Google Gemini 2.0 Flash Experimental
-- **Storage**: Local browser storage with export capabilities
-- **Icons**: Lucide React
+## 🏗️ Architecture Overview
 
-## 🚀 Quick Start
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   AI Service    │    │   Harness API   │
+│                 │    │                 │    │                 │
+│ • Next.js 15    │───▶│ • Gemini 2.0    │    │ • Deploy Configs │
+│ • TypeScript    │    │ • Context Aware │    │ • Manage Resources│
+│ • Tailwind CSS  │    │ • File Analysis │    │ • Real-time Ops │
+│ • Radix UI      │    │ • Web Search    │    │ • API Integration│
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         └───────────────────────┼───────────────────────┘
+                                 │
+                    ┌─────────────────┐
+                    │ Browser Storage │
+                    │                 │
+                    │ • Chat History  │
+                    │ • Projects      │
+                    │ • User Prefs    │
+                    └─────────────────┘
+```
+
+## ✨ Key Features Demonstrated
+
+### 🤖 AI-Powered Assistance
+- **Specialized Knowledge**: Trained specifically for Harness platform operations
+- **Context Awareness**: Remembers conversation history and project context
+- **File Analysis**: Processes uploaded YAML files and provides detailed feedback
+- **Web Search Integration**: Enhanced responses with real-time information
+
+### 📁 Smart File Handling
+- **YAML Upload**: Drag & drop or click to upload `.yaml`/`.yml` files
+- **Content Analysis**: AI analyzes file structure and suggests improvements
+- **Multi-file Support**: Handle multiple configuration files simultaneously
+- **Syntax Validation**: Real-time validation of Harness YAML syntax
+
+### 🚀 Harness Integration
+- **Resource Detection**: Automatically identifies different Harness resource types
+- **Deploy Buttons**: One-click deployment to your Harness account
+- **API Integration**: Direct connection to Harness platform APIs
+- **Configuration Management**: Create and manage pipelines, services, environments
+
+### 📊 Project Organization
+- **Team Workspaces**: Organize conversations by project or team
+- **Context Sharing**: AI leverages insights across project conversations
+- **Persistent Storage**: All data saved locally in browser
+- **Export Capabilities**: Download configurations and chat history
+
+## 🛠️ Technology Stack
+
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Frontend** | Next.js 15 + TypeScript | Modern React framework with type safety |
+| **UI Components** | Radix UI + Tailwind CSS | Accessible, customizable design system |
+| **AI Engine** | Google Gemini 2.0 Flash | Advanced language model with reasoning |
+| **API Integration** | Harness Platform APIs | Direct deployment and resource management |
+| **Storage** | Browser LocalStorage | Client-side persistence and privacy |
+| **Build Tool** | Next.js + Vercel | Optimized builds and serverless deployment |
+
+## 🚀 Quick Demo Setup
 
 ### Prerequisites
+- Node.js 18+ installed
+- Google Gemini API key ([Get one here](https://ai.google.dev/))
+- Harness account with API access (optional for deploy features)
 
-- **Node.js** 18+ 
-- **npm** or **yarn** or **pnpm**
-- **Google Gemini API Key** (free tier available)
-
-### 1. Clone the Repository
-
+### 1. Clone and Install
 ```bash
-git clone https://github.com/yourusername/canary.git
+git clone <repository-url>
 cd canary
-```
-
-### 2. Install Dependencies
-
-```bash
 npm install
-# or
-yarn install
-# or
-pnpm install
 ```
 
-### 3. Configure Environment Variables
-
-Create a `.env.local` file in the project root:
-
+### 2. Environment Configuration
+Create `.env.local` file:
 ```env
-# Required: Google Gemini API key
+# Required: Google Gemini AI
 GEMINI_API_KEY=your_gemini_api_key_here
 
-# Optional: Harness deployment integration (for deploy to Harness feature)
-NEXT_PUBLIC_HARNESS_API_KEY=your_harness_api_key_here
-NEXT_PUBLIC_HARNESS_ACCOUNT_ID=your_harness_account_id
-NEXT_PUBLIC_HARNESS_ORG_ID=your_harness_org_id
-NEXT_PUBLIC_HARNESS_PROJECT_ID=your_harness_project_id
+# Optional: Harness Deployment Integration
+NEXT_PUBLIC_HARNESS_API_KEY=your_harness_api_key
+NEXT_PUBLIC_HARNESS_ACCOUNT_ID=your_account_id
+NEXT_PUBLIC_HARNESS_ORG_ID=your_org_id
+NEXT_PUBLIC_HARNESS_PROJECT_ID=your_project_id
 ```
 
-**Get your API key:**
-1. Visit [Google AI Studio](https://ai.google.dev/)
-2. Create a new API key
-3. Copy the key to your `.env.local` file
-
-### 4. Run Development Server
-
+### 3. Start Development Server
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) to see the demo.
 
-## 📦 Build for Production
+## 🎯 Demo Flow
 
-### Local Build
+### Basic Chat Demo
+1. **Start Conversation**: Ask about Harness pipelines or configurations
+2. **See AI Response**: Watch real-time thinking process and detailed responses
+3. **Context Building**: Ask follow-up questions to see conversation memory
+4. **Web Search**: Ask about latest Harness features to see web integration
 
+### File Upload Demo
+1. **Upload YAML**: Drag a Harness configuration file to chat
+2. **AI Analysis**: See detailed analysis of the configuration
+3. **Suggestions**: Get improvement recommendations and best practices
+4. **Validation**: Identify syntax errors or missing components
+
+### Deployment Demo (Requires Harness Account)
+1. **Generate Config**: Ask AI to create a sample pipeline
+2. **Deploy Button**: Click "Deploy to Harness" when it appears
+3. **Configuration**: Fill in deployment details
+4. **Live Deployment**: Watch as resource is created in Harness
+
+### Project Organization Demo
+1. **Create Project**: Click "New Project" in sidebar
+2. **Team Context**: Start multiple chats within the project
+3. **Context Sharing**: See how AI remembers project discussions
+4. **Organization**: Navigate between different project workspaces
+
+## 📚 Code Structure (For Engineers)
+
+### Core Components
+
+**`/components/chat-interface.tsx`** - Main chat UI
+- Handles user input and AI responses
+- Manages file uploads and processing
+- Integrates with all major features
+
+**`/lib/gemini.ts`** - AI Service Integration
+- Secure API route for Gemini AI calls
+- Context management and conversation history
+- Error handling and rate limiting
+
+**`/lib/harness-api.ts`** - Harness Platform Integration
+- API client for Harness operations
+- Resource deployment and management
+- Authentication and security
+
+**`/lib/yaml-detector.ts`** - Smart Configuration Detection
+- Identifies Harness resource types in YAML
+- Validates configuration syntax
+- Provides deployment suggestions
+
+**`/components/harness-deploy-button.tsx`** - Deployment UI
+- Modal interface for deployment configuration
+- Form validation and error handling
+- Live deployment status updates
+
+### Data Flow
+
+1. **User Input** → Chat Interface → AI Service
+2. **AI Processing** → Context Analysis → Response Generation
+3. **YAML Detection** → Resource Identification → Deploy Button Creation
+4. **Deployment** → Harness API → Resource Creation
+
+### Security Features
+
+- **Server-side API calls**: All sensitive operations happen on server
+- **Environment variables**: API keys never exposed to client
+- **Input validation**: All user inputs sanitized and validated
+- **Error handling**: Graceful degradation for all failure modes
+
+## 🎨 UI/UX Design Highlights
+
+### Clean, Professional Interface
+- **Untitled UI Design System**: Modern, accessible components
+- **Light Theme**: Optimized for readability and professional appearance
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Real-time Updates**: Smooth animations and live feedback
+
+### Intelligent User Experience
+- **Context Indicators**: Visual badges show AI capabilities being used
+- **Thinking Process**: Transparent AI reasoning process
+- **Smart Suggestions**: Contextual help and recommendations
+- **Error Recovery**: Clear error messages with actionable solutions
+
+## 🔧 Customization Points
+
+### Adding New AI Capabilities
+1. Extend the system prompt in `/app/api/gemini/route.ts`
+2. Add new response types in the chat interface
+3. Create specialized UI components for new features
+
+### Integrating Other Platforms
+1. Create new API clients in `/lib/`
+2. Add detection logic for new configuration types
+3. Build deployment UI components
+
+### Extending Project Features
+1. Enhance project metadata in storage schema
+2. Add team collaboration features
+3. Implement sharing and export capabilities
+
+## 📋 Demo Talking Points
+
+### For Technical Audiences
+- **Modern Architecture**: Next.js 15, TypeScript, and serverless deployment
+- **AI Integration**: Advanced prompt engineering and context management
+- **API Design**: RESTful integration with error handling and security
+- **Performance**: Optimized builds, lazy loading, and efficient state management
+
+### For Business Audiences
+- **Productivity Gains**: Instant DevOps assistance and configuration generation
+- **Error Reduction**: AI validation prevents common configuration mistakes
+- **Team Collaboration**: Shared project workspaces and knowledge retention
+- **Cost Efficiency**: Faster deployment cycles and reduced manual work
+
+### For DevOps Teams
+- **Practical Utility**: Real solutions for daily Harness operations
+- **Learning Tool**: AI explains best practices and configuration options
+- **Automation Bridge**: Connects manual work with automated deployments
+- **Knowledge Sharing**: Captures and shares team expertise
+
+## 🚀 Deployment Options
+
+### Vercel (Recommended)
 ```bash
-# Build the application
-npm run build
-
-# Start production server
-npm start
-```
-
-### Optimize for Production
-
-The app includes several optimizations:
-- **Static Generation** for landing pages
-- **Dynamic Rendering** for chat routes
-- **Code Splitting** for optimal loading
-- **Image Optimization** with Next.js Image component
-
-## 🌐 Deployment
-
-### Deploy to Vercel (Recommended)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/canary)
-
-1. **One-Click Deploy**: Click the deploy button above
-2. **Add Environment Variables**: Set `GEMINI_API_KEY` in Vercel dashboard
-3. **Deploy**: Your app will be live in minutes
-
-**Manual Vercel Deployment:**
-
-```bash
-# Install Vercel CLI
 npm install -g vercel
-
-# Deploy
 vercel
-
-# Add environment variable
-vercel env add GEMINI_API_KEY
 ```
+Add environment variables in Vercel dashboard.
 
-### Deploy to Netlify
-
-1. **Connect Repository**: Link your GitHub repo to Netlify
-2. **Build Settings**:
-   - Build command: `npm run build`
-   - Publish directory: `.next`
-3. **Environment Variables**: Add `GEMINI_API_KEY`
-
-### Deploy to Railway
-
+### Docker
 ```bash
-# Install Railway CLI
-npm install -g @railway/cli
-
-# Login and deploy
-railway login
-railway new
-railway up
-```
-
-### Deploy with Docker
-
-```dockerfile
-# Dockerfile
-FROM node:18-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-
-COPY . .
-RUN npm run build
-
-FROM node:18-alpine AS runner
-WORKDIR /app
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-EXPOSE 3000
-ENV PORT 3000
-CMD ["node", "server.js"]
-```
-
-```bash
-# Build and run
 docker build -t canary .
 docker run -p 3000:3000 -e GEMINI_API_KEY=your_key canary
 ```
 
-## 📖 Usage Guide
-
-### Basic Chat
-
-1. **Start Conversation**: Type your Harness-related question
-2. **View Response**: AI generates detailed explanations and configurations
-3. **Copy YAML**: Use the copy button to grab generated configurations
-4. **Deploy**: Click "Deploy to Harness" to open the platform
-
-### Project Management
-
-1. **Create Project**: Click "New Project" in the sidebar
-2. **Organize Chats**: Group related conversations by project
-3. **Switch Contexts**: Jump between projects seamlessly
-4. **Persistent Storage**: All data saved locally in your browser
-
-### YAML Configuration
-
-1. **Generate**: Ask for specific Harness resources (pipelines, services, etc.)
-2. **Review**: Check the generated YAML in the right panel
-3. **Export**: Download configurations for later use
-4. **Deploy**: Direct integration with Harness platform
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `GEMINI_API_KEY` | Google Gemini API key | Yes |
-| `NEXT_PUBLIC_HARNESS_API_KEY` | Harness API key for deployment | No |
-| `NEXT_PUBLIC_HARNESS_ACCOUNT_ID` | Harness account identifier | No |
-| `NEXT_PUBLIC_HARNESS_ORG_ID` | Harness organization identifier | No |
-| `NEXT_PUBLIC_HARNESS_PROJECT_ID` | Harness project identifier | No |
-
-### Rate Limits
-
-- **Free Tier**: 50 requests per day
-- **Paid Plans**: Higher limits available
-- **Error Handling**: Graceful degradation with helpful messages
-
-## 🔧 Development
-
-### Project Structure
-
-```
-canary/
-├── app/                    # Next.js App Router
-│   ├── chat/[chatId]/     # Individual chat pages
-│   ├── project/[id]/      # Project management
-│   └── layout.tsx         # Root layout
-├── components/            # React components
-│   ├── ui/               # Reusable UI components
-│   ├── chat-interface.tsx # Main chat component
-│   └── harness-response-card.tsx # YAML display
-├── lib/                  # Utilities and services
-│   ├── gemini.ts        # Gemini API integration
-│   ├── chat-storage.ts  # Local storage management
-│   └── utils.ts         # Helper functions
-└── public/              # Static assets
-```
-
-### Available Scripts
-
+### Traditional Hosting
 ```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run type-check   # Run TypeScript checks
-```
-
-### Adding New Features
-
-1. **Components**: Add to `/components` directory
-2. **Pages**: Use App Router in `/app` directory
-3. **API Integration**: Extend `/lib/gemini.ts`
-4. **Styling**: Use Tailwind classes with Radix UI
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Build Errors**
-```bash
-# Clear Next.js cache
-rm -rf .next
 npm run build
+npm start
 ```
 
-**Dependency Conflicts**
-```bash
-# Clean install
-rm -rf node_modules package-lock.json
-npm install --legacy-peer-deps
-```
+## 🔮 Future Enhancements
 
-**API Key Issues**
-- Verify key is set in `.env.local`
-- Check key has proper permissions
-- Ensure file is not committed to git
-
-**Rate Limit Errors**
-- Upgrade to paid Gemini plan
-- Implement request queuing
-- Cache responses locally
-
-### Performance Optimization
-
-- **Enable ISR**: For frequently accessed content
-- **Implement Caching**: For API responses
-- **Optimize Images**: Use Next.js Image component
-- **Bundle Analysis**: Run `npm run analyze`
+- **Multi-platform Support**: Jenkins, GitLab CI, AWS CodePipeline
+- **Advanced Analytics**: Usage tracking and optimization suggestions  
+- **Team Features**: Real-time collaboration and shared workspaces
+- **Enterprise Integration**: SSO, audit logs, and compliance features
+- **Mobile App**: Native iOS/Android applications
+- **Voice Interface**: Speech-to-text for hands-free operations
 
 ## 🤝 Contributing
 
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
+This is a demo project showcasing AI integration possibilities. For production use:
 
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Use Prettier for code formatting
-- Write meaningful commit messages
-- Test across different screen sizes
-- Ensure API key security
+1. **Security Review**: Implement proper authentication and authorization
+2. **Scale Testing**: Load test AI service integration and API limits
+3. **Error Handling**: Enhance error recovery and user feedback
+4. **Monitoring**: Add observability and performance tracking
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Google Gemini Team** for the powerful AI model
-- **Harness** for the DevOps platform inspiration
-- **Vercel** for excellent hosting and Next.js framework
-- **Radix UI** for accessible component primitives
-
-## 🔗 Links
-
-- **Live Demo**: [Your deployed app URL]
-- **Harness Platform**: [app.harness.io](https://app.harness.io)
-- **Gemini API**: [ai.google.dev](https://ai.google.dev)
-- **Next.js Docs**: [nextjs.org](https://nextjs.org)
+MIT License - See [LICENSE](LICENSE) file for details.
 
 ---
 
-**Built with ❤️ for the DevOps community**
+**Built with ❤️ to demonstrate the future of AI-powered DevOps**
